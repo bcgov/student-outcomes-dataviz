@@ -108,6 +108,8 @@ shinyUI(tagList(dashboardPage(title="BC Student Outcomes Data Viewer",
     
     br(),
     width = 310,
+    fluidRow(uiOutput("note")
+    ),
     fluidRow(
       column(4, uiOutput("student_group"))
     ),
@@ -239,22 +241,22 @@ shinyUI(tagList(dashboardPage(title="BC Student Outcomes Data Viewer",
         
     fluidRow(box(
       id="emp",title=viewMoreTitle(sectionID = "employmentlink", title = div(tags$b("Employment"),style="font-size: 25px;")), status = "primary", solidHeader = TRUE, collapsible = TRUE, width = 12,collapsed=FALSE,
-         
-      column(width=4, 
-                   fluidRow(uiOutput("labour"),bsTooltip(id = "labour", title = "Respondents who were employed or were looking and available for work.", placement = "right", trigger = "hover")),
-                   fluidRow(uiOutput("wage")
-                            )
-                   ),
-                 
-                 column(width=4, 
-                        fluidRow(uiOutput("employment_rate"),bsTooltip(id = "employment_rate", title = "Respondents who were working at a job or business at the time of the survey.", placement = "right", trigger = "hover")),
-                        fluidRow(uiOutput("unemploy_rate"),bsTooltip(id = "unemploy_rate", title = "Respondents who were not working but were available and looking for a job.", placement = "right", trigger = "hover")
-                                 )
-                        ),
-                 column(width=4, 
-                        fluidRow(uiOutput("full_time"),bsTooltip(id = "full_time", title = "Employed 30 or more hours per week at main job.", placement = "left", trigger = "hover"),style="padding:0 5px"),
-                        fluidRow(uiOutput("self"))),
-               
+      fluidRow(
+        column(4,uiOutput("labour"),bsTooltip(id = "labour", title = "Respondents who were employed or were looking and available for work.", placement = "right", trigger = "hover")),
+        column(4,uiOutput("wage")),
+        column(4, uiOutput("unemploy_rate"),bsTooltip(id = "unemploy_rate", title = "Respondents who were not working but were available and looking for a job.", placement = "right", trigger = "hover"))
+      ),
+      fluidRow(
+        column(12, uiOutput('employment_rate'))),
+      fluidRow(
+        column(6, uiOutput('full_time')),
+        column(6, uiOutput('self'))
+      ),
+      fluidRow(
+        column(6, uiOutput('related_program_emp')),
+        column(6, uiOutput('knowledge_skill_useful'))
+      ),
+   
         fluidRow(
           box(width=12, 
             #div(tags$em("Working in a program-related job by program area",style="font-size: 16px;margin-left: 210px")),

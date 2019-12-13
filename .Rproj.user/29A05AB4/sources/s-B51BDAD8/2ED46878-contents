@@ -24,26 +24,6 @@
 
 # Read libraries
 
-
-box_wrapper <- function(value, title){
-  div(class="example", style="border-radius: 5px;border: 2px solid #fff; display:flex; width: 100%; align-items:center;justify-content:center; flex-direction: column;color:#2A64AB;height: 150px;margin:2% 0 2% 0",
-         p(value, style= "font-weight: bold; font-size:2.2vw;"),
-         p(title, style="text-align: center;font-size:  1.5vw;")
-    )
-}
-
-box_wrapper2 <- function(value, title){
-  div(style="background-color: #E0EBF6; border-radius: 5px;border: 2px solid #fff; display:flex; width: 100%; align-items:center;justify-content:center; flex-direction: column;color:#2A64AB;height: 150px;margin:2% 0 2% 0;",
-      p(value, style= "font-weight: bold; font-size:2.2vw;"),
-      p(title, style="text-align: center;font-size: 1.5vw;")
-  )
-}
-
-
-
-
-
-
 imageWrapper2<-function(value,title="",img, width="100%",height="200px"){
   div(style="background: #fff;margin-bottom: 8px;",
       div(title,style="background: #fff;color: #1a3f72;font-size: 1.5vw;font-weight: bold;padding: 7px 10px; text-align: center"),
@@ -167,7 +147,7 @@ shinyServer(function(input, output, session){
   
   output$student_group <- renderUI({
       div(style="display: inline-block;",
-          selectizeInput("student_group", "1. Student Group",choices= as.character(unique(students$CREDENTIAL)), 
+          selectizeInput("student_group", "Student Group",choices= as.character(unique(students$CREDENTIAL)), 
                 selected = "Apprenticeship",
                 width = 315)
       )
@@ -180,11 +160,12 @@ shinyServer(function(input, output, session){
 
   output$institution <- renderUI({
     div(style="display: inline-block;",
-    selectizeInput("institution", "2. Institution",choices= as.character(unique(students$INSTITUTION_NAME[students$INSTITUTION_NAME==as.character(unique(students$INSTITUTION_NAME))[1]])),
+    selectizeInput("institution", "Institution",choices= as.character(unique(students$INSTITUTION_NAME[students$INSTITUTION_NAME==as.character(unique(students$INSTITUTION_NAME))[1]])),
                 width = 315,
                 selected=NULL)
     )
-  
+
+    
 
   })
   
@@ -192,7 +173,7 @@ shinyServer(function(input, output, session){
 
   output$program <- renderUI({
     div(style="display: inline-block;",
-    selectizeInput("program", "3. Program Area",
+    selectizeInput("program", "Program Area",
                 choices=
                   as.character(unique(
                     students$PROGRAM_AREA_NAME[
@@ -214,7 +195,7 @@ shinyServer(function(input, output, session){
     
     else if (!(input$institution %in% all_inst)){
       div(style="display: inline-block;",
-          selectizeInput("program_name", "4. Program Name",
+          selectizeInput("program_name", "Program Name",
                          choices=
                            as.character(unique(students$PROGRAM_NAME[students$PROGRAM_AREA_NAME==input$program])),
                          
@@ -254,9 +235,9 @@ shinyServer(function(input, output, session){
   observeEvent(c(input$student_group,input$institution, input$program),{
     
     updateSelectInput(session,'program_name',
-                      choices=sort(unique(students$PROGRAM_NAME[students$CREDENTIAL==input$student_group &
+                      choices=unique(students$PROGRAM_NAME[students$CREDENTIAL==input$student_group &
                                                              students$INSTITUTION_NAME==input$institution & 
-                                                             students$PROGRAM_AREA_NAME==input$program])))
+                                                             students$PROGRAM_AREA_NAME==input$program]))
   })
   
 
@@ -283,6 +264,19 @@ shinyServer(function(input, output, session){
   })
   
   
+  # error message to select an institution for bachelor's degree
+  output$alert2 <- renderUI({
+    req(input$student_group)
+    if((input$student_group =="Bachelor's Degree") & (input$institution != "")) {
+      HTML(paste0("<div style='color:white;padding-left:18px;padding-top:20px;font-size: 14px;'>","<b>", "All institutions' combined results not available. Please select an institution.","<b>","</div>"))
+    }else{
+      NULL
+    }
+    
+  })
+  
+    
+  
 
   # Create reactive values for input data
   filtered_data <- reactive({
@@ -303,7 +297,6 @@ shinyServer(function(input, output, session){
     students[students$CREDENTIAL==input_CREDENTIAL, ] %>%
       filter( INSTITUTION_NAME %in% input_institution) %>%
       filter (PROGRAM_AREA_NAME%in% input_program) %>% 
-      #filter(PROGRAM_NAME %in% input_program_name) %>% 
       filter (if(!(input$institution %in% all_inst)) PROGRAM_NAME %in% input_program_name else TRUE)
 
   })
@@ -320,10 +313,9 @@ shinyServer(function(input, output, session){
     
   })
   
- 
-
-  # NEW
-  output$gender <- renderUI ({
+  
+  
+  output$male_side <- renderUI({
     
     req(filtered_data()$MALE)
     
@@ -342,6 +334,18 @@ shinyServer(function(input, output, session){
       paste(round(filtered_data()$MALE*100, digits=0), "%", sep="")
     }
     
+    div (male,style="text-align: left; vertical-align:middle;font-size:1.7vw;font-weight: bold;padding:10px;",br(),
+         
+         div("were male",style="text-align: left; vertical-align:middle;color: white;font-size: 0.9vw; font-weight: normal;" )
+    )
+    
+  })
+  
+  
+  output$female_side <- renderUI({
+    
+    req(filtered_data()$FEMALE)
+    
     female <- if(filtered_data()$FEMALE==-3){
       "Fewer than 10%"
     }else if (filtered_data()$FEMALE==-4){
@@ -356,65 +360,34 @@ shinyServer(function(input, output, session){
     }else{
       paste(round(filtered_data()$FEMALE*100, digits=0), "%", sep="")
     }
-    
-    
-    
-    
-    
-    div(
-      div(class= "img_text", style="display: flex;flex-direction: row;justify-content: center;align-items: center;color: #2A64AB",
-          tags$img(src = "img/People.png", width = "80px", height = "80px", style="vertical-align: middle; height: 50%;max-weight: 100%; float:left;"),
-          div(class="gender", style="display: flex;flex-direction: column;margin: 10px;;",
-              div(class="male", style="display: flex;flex-direction: row;justify-content: space-between;align-items: center;",
-                  h1(male,style=";font-weight: bold;padding-right: 10px;font-size: 2vw; text-align: right;"),
-                  h1("were male", style="font-size:1.5vw;text-align: left;")
-              ),
-              div(class="female", style="display: flex;flex-direction: row;justify-content: space-between;align-items: center;",
-                  h1(female, style="font-weight: bold;padding-right: 10px; font-size: 2vw; text-align: right;"),
-                  h1("were female", style="font-size: 1.5vw; text-align: left;")
-              )
-          )
-      )
-    )       
 
+
+    div (female,style="text-align: left; vertical-align:middle;font-size:1.7vw;font-weight: bold;padding:10px;",br(),
+         
+         div("were female",style="text-align: left; vertical-align:middle;color: white;font-size: 0.9vw; font-weight: normal;" )
+    )
+    
   })
   
-
-  output$age <- renderUI ({
+  output$age_side <- renderUI({
     
     req(filtered_data()$AGE)
-    div(style="display: flex;justify-content: center;align-items: center;padding: 30px;/* padding: 20px;color: #2A64AB;",
-        tags$img(src = "img/Birthday_cake.png", width = "90px", height = "90px", style="float:left;"),
-        h1(round(filtered_data()$AGE), style="font-weight: bold;color: #2A64AB;margin:3%; font-size:2.4vw;"),
-        h1(HTML("was the", "<b>","median age","</b>","<br>","at the time of the survey"), style="color: #2A64AB;font-size:1.2vw;")
-    )
-  
-        
-
-  })
-  
-  
-  
-  output$satisfaction2 <- renderUI ({
-    
-    req(round(filtered_data()$satisfaction_rate*100,digits=0))
-    div(style="background: #E0EBF6;margin-bottom: 8px;display: flex;align-items:center;justify-content:center;border-radius: 5px;border: 2px solid #E0EBF6;height:9vh;",
-        span(paste0(round(filtered_data()$satisfaction_rate*100,digits=0),"%"), style="color: #2A64AB; font-size:2.2vw;margin: 2%;font-weight: bold;"),
-        span(HTML("were", "<strong>", "satisfied with their education","</strong>"),  style="font-size:1.5vw;color: #2A64AB;")
-        
+    div (filtered_data()$AGE,style="text-align: left; vertical-align:middle;font-size:1.7vw;font-weight: bold;padding:10px;",br(),
+         
+         div("median age",style="text-align: left; vertical-align:middle;color: white;font-size: 0.9vw; font-weight: normal;" )
     )
     
   })
   
-  
-  output$quality_education <- renderUI ({
-    req(filtered_data()$instruction)
-    box_wrapper(paste0(round(filtered_data()$instruction * 100,0),"%"), HTML("said the", "<b>","quality of instruction","</b>","<br>", "was very good or good"))
 
+  output$satisfaction <- renderUI ({
+    
+    req(filtered_data()$satisfaction_rate)
+    imageWrapper2(paste(round(filtered_data()$satisfaction_rate*100, digits=0), "%", sep=""), "Satisfied with education",img = "img/satisfied.png")
   })
   
   output$employed_full_time <- renderUI ({
-
+    
     req(filtered_data()$EMPLOY_FULL_TIME)
     
     employed_full_time <- if(filtered_data()$EMPLOY_FULL_TIME==-3){
@@ -422,10 +395,10 @@ shinyServer(function(input, output, session){
     }else if (filtered_data()$EMPLOY_FULL_TIME==-4){
       "More than 90%"
     }else if (filtered_data()$EMPLOY_FULL_TIME==-8){
-      "Minority"
+      "Minority were employed full-time"
       
     }else if (filtered_data()$EMPLOY_FULL_TIME==-9){
-      "Majority"
+      "Majority were employed full-time"
       
     }else if (filtered_data()$EMPLOY_FULL_TIME==-99){
       "Too few responses to report"
@@ -433,139 +406,127 @@ shinyServer(function(input, output, session){
       paste(round(filtered_data()$EMPLOY_FULL_TIME*100, digits=0), "%", sep="")
     }
     
-    
+
     # Changing font size based on the value, if there is a suppression the text size should be smaller
     
     if (nchar(employed_full_time)>= 4){
-      box_wrapper2(employed_full_time,"were employed full-time")
+      imageWrapper_text(employed_full_time,"Employed full-time",img = "img/full_time.png")
       
     }else{
-      box_wrapper2(employed_full_time, "Employed full-time")
+      imageWrapper2(employed_full_time , "Employed full-time",img = "img/full_time.png")
     }
-    
-
+ 
+  
   })
   
-  
-  output$further_studies <- renderUI ({
+  output$quality_education <- renderUI ({
     req(filtered_data()$instruction)
-    title_alternate <- if (filtered_data()$CREDENTIAL == "Trades Foundation"){
-        "obtained employment as an apprentice"
-      } else if (filtered_data()$CREDENTIAL == "Apprenticeship"){
-        "received their certificate of qualification"
-      } else{
-        "took further studies"
-      }
-    
-
-    box_wrapper2(paste0(round(filtered_data()$instruction * 100,0),"%"), title_alternate)
-    
+    imageWrapper2(paste(round(filtered_data()$instruction*100, digits=0), "%", sep=""), "Quality of instruction",img = "img/quality.png")
   })
   
   output$related_program <- renderUI ({
     req(filtered_data()$JOB_PROGRAM_RELATED)
-    box_wrapper(paste0(round(filtered_data()$JOB_PROGRAM_RELATED*100,0),"%"),HTML("of employed respondents","<br>", "were in a job","<b>", "related to their program","<b/>"))
+    
+    imageWrapper2(paste(round(filtered_data()$JOB_PROGRAM_RELATED*100, digits=0), "%", sep=""), "Main job is related to program",img = "img/self_employed.png")
+  })
+  
+  output$further_studies <- renderUI ({
+    req(filtered_data()$FURTH_STUDIES)
+    
+    imageWrapper2(paste(round(filtered_data()$FURTH_STUDIES*100, digits=0), "%", sep=""), "Took further studies",img = "img/qualification.png")
+  })
+  
+  output$unemployment_rate <- renderUI ({
+    
+    req(filtered_data()$UNEMPLOYED)
+    
+    unemployed <- if(filtered_data()$UNEMPLOYED==-3){
+      "Fewer than 10%"
+    }else if (filtered_data()$UNEMPLOYED==-4){
+      "More than 90%"
+    }else if (filtered_data()$UNEMPLOYED==-12){
+      "Minority were unemployed"
+      
+    }else if (filtered_data()$UNEMPLOYED==-13){
+      "Majority were unemployed"
+      
+    }else if (filtered_data()$UNEMPLOYED==-99){
+      "Too few responses to report"
+    }else{
+      paste(round(filtered_data()$UNEMPLOYED*100, digits=1), "%", sep="")
+    }
+    
+
+    if (nchar(unemployed) > 5){
+      imageWrapper_text(unemployed,"Unemployment rate",img = "img/unemployment.png")
+      
+    }else{
+      imageWrapper2(unemployed, "Unemployment rate",img = "img/unemployment.png")
+    }
+    
+
     
   })
   
-  
-
-  
-  # output$related_program <- renderUI ({
-  #   req(filtered_data()$JOB_PROGRAM_RELATED)
-  #   
-  #   imageWrapper2(paste(round(filtered_data()$JOB_PROGRAM_RELATED*100, digits=0), "%", sep=""), "Main job is related to program",img = "img/self_employed.png")
-  # })
-  
-  # output$further_studies <- renderUI ({
-  #   req(filtered_data()$FURTH_STUDIES)
-  #   
-  #   imageWrapper2(paste(round(filtered_data()$FURTH_STUDIES*100, digits=0), "%", sep=""), "Took further studies",img = "img/qualification.png")
-  # })
-  # 
-  # output$unemployment_rate <- renderUI ({
-  #   
-  #   req(filtered_data()$UNEMPLOYED)
-  #   
-  #   unemployed <- if(filtered_data()$UNEMPLOYED==-3){
-  #     "Fewer than 10%"
-  #   }else if (filtered_data()$UNEMPLOYED==-4){
-  #     "More than 90%"
-  #   }else if (filtered_data()$UNEMPLOYED==-12){
-  #     "Minority were unemployed"
-  #     
-  #   }else if (filtered_data()$UNEMPLOYED==-13){
-  #     "Majority were unemployed"
-  #     
-  #   }else if (filtered_data()$UNEMPLOYED==-99){
-  #     "Too few responses to report"
-  #   }else{
-  #     paste(round(filtered_data()$UNEMPLOYED*100, digits=1), "%", sep="")
-  #   }
-  #   
-
-  #   if (nchar(unemployed) > 5){
-  #     imageWrapper_text(unemployed,"Unemployment rate",img = "img/unemployment.png")
-  #     
-  #   }else{
-  #     imageWrapper2(unemployed, "Unemployment rate",img = "img/unemployment.png")
-  #   }
-  #   
-  # 
-  #   
-  # })
-  # 
 
       
 
   
- 
-  # plot for different skills
-  
-  data_skill_plot <- reactive({
+  # Read & Comprehend box
+  output$read<-renderUI({
     
     req(filtered_data()$Read)
+    imageWrapper2(paste(round(filtered_data()$Read*100, digits=0), "%", sep=""),"Read & comprehend material",img = "img/read.png")
+  })
+  
+  # Write Clearly
+  output$write<-renderUI({
+    
     req(filtered_data()$Write_Clearly)
-    req( filtered_data()$Speak_Clearly)
-    req( filtered_data()$Work_With_Others)
+    imageWrapper2(paste(round(filtered_data()$Write_Clearly*100, digits=0), "%", sep=""), "Write clearly & concisely",img = "img/write.png")
+  })
+
+  
+  # Speak Effectively 
+  output$speak<-renderUI({
+    
+    req(filtered_data()$Speak_Clearly)
+    imageWrapper2(paste(round(filtered_data()$Speak_Clearly*100, digits=0), "%", sep=""),"Speak effectively",img = "img/speak.png")
+  })
+  
+  # Work with Others
+  output$work<-renderUI({
+    
+    req(filtered_data()$Work_With_Others)
+    imageWrapper2(paste(round(filtered_data()$Work_With_Others*100, digits=0), "%", sep=""),"Work effectively with others",img = "img/work_others.png")
+  })
+  
+  # Think Critically 
+  output$analyse<-renderUI({
+    
     req(filtered_data()$Think_Critically)
+    imageWrapper2(paste(round(filtered_data()$Think_Critically*100, digits=0), "%", sep=""),"Analyse & think critically",img = "img/analyze.png")
+  })
+  
+  # Resolve Issues
+  output$resolve<-renderUI({
+    
     req(filtered_data()$Resolve_Issues)
+    imageWrapper2(paste(round(filtered_data()$Resolve_Issues*100, digits=0), "%", sep=""),"Resolve issues or problems",img = "img/resolve.png")
+  })
+  
+  # Learn Own
+  output$learn_own<-renderUI({
+    
     req(filtered_data()$Learn_Independently)
-    
-    
-    Skills_Development<- c("Read and comprehend material", "Write clearly and concisely","Speak effectively", "Work effectively with others","Analyse and think critically","Resolve issues or problems","Learn independently")
-    values <- c(filtered_data()$Read, filtered_data()$Write_Clearly, filtered_data()$Speak_Clearly, filtered_data()$Work_With_Others, filtered_data()$Think_Critically, filtered_data()$Resolve_Issues,
-                filtered_data()$Learn_Independently)
-    
-    data <- data.frame(Skills_Development, values) 
-      
-    #data$values <- paste(round(data$values*100, digits=0), "%", sep="")
-    return(data)
-
-  })
-  
-  output$plot_skills <- renderPlotly ({
-    
-    plot_ly (x = data_skill_plot()$values,
-             y = ~ reorder(data_skill_plot()$Skills_Development, data_skill_plot()$values),
-             type = 'bar', marker = list(color='rgb(26,63,114)')) %>% 
-      layout(title = '', titlefont = list(
-        family = "Myriad-Pro",
-        size = 16),
-        orientation = 'h',
-        xaxis = list(title = "",tickformat = "%",zeroline=FALSE,fixedrange=TRUE),
-        yaxis = list(title = "",fixedrange=TRUE),
-        margin = list(l = 220, pad=7)) %>% 
-      add_annotations(xref = 'x', yref = 'y',
-                      x =data_skill_plot()$values , 
-                      y = reorder(data_skill_plot()$Skills_Development, data_skill_plot()$values),
-                      text = paste(round(data_skill_plot()$values*100, digits=0), "%", sep=""),
-                      showarrow = FALSE,xanchor = 'left',xshift = 3,opacity = 0.7) %>% 
-      config(displayModeBar = F)  
- 
+    imageWrapper2(paste(round(filtered_data()$Learn_Independently*100, digits=0), "%", sep=""),"Learn independently",img = "img/learn_independently.png")
   })
   
 
+  
+
+  
+  
   ########## NEED TO SOLVE
   #TIP <- reactiveValues()
   #observe({
@@ -615,17 +576,10 @@ shinyServer(function(input, output, session){
 
   
   # EMPLOYMENT
+  # unemployment rate
+  
 
-  # 1. Percentages of students in labour Force
-  output$labour<-renderUI({
-    
-    req(filtered_data()$IN_LABR_MKT)
-    
-    
-    imageWrapper2(paste(round(filtered_data()$IN_LABR_MKT*100, digits=0), "%", sep=""),"In labour force",img = "img/Gears.png")
-  })
-
-  # 2. wage - conditional - bachelor's degree display salary wage
+  # wage - conditional - bachelor's degree display salary wage
   output$wage<-renderUI({
   
     req(input$student_group)
@@ -640,49 +594,26 @@ shinyServer(function(input, output, session){
     
     
     if (input$student_group=="Bachelor's Degree"){
-      imageWrapper2(wage,"Median annual salary",img = "img/Dollar.png")
+      imageWrapper2(wage,"Median annual salary",img = "img/median_wage.png")
     }else if (nchar(wage)>5){
-      imageWrapper_text(wage, "Median hourly wage",img = "img/Dollar.png")
+      imageWrapper_text(wage, "Median hourly wage",img = "img/median_wage.png")
     }else{
       
-      imageWrapper2(wage,"Median hourly wage",img = "img/Dollar.png")
+      imageWrapper2(wage,"Median hourly wage",img = "img/median_wage.png")
     }
   })
   
-  # 3. Unemployment rate
-  
-  output$unemploy_rate<-renderUI({
-    
-    req(filtered_data()$UNEMPLOYED)
-    
-    unemployed <- if(filtered_data()$UNEMPLOYED==-3){
-      "Fewer than 10%"
-    }else if (filtered_data()$UNEMPLOYED==-4){
-      "More than 90%"
-    }else if (filtered_data()$UNEMPLOYED==-12){
-      HTML("Minority")
       
-    }else if (filtered_data()$UNEMPLOYED==-13){
-      HTML("Majority")
-      
-    }else if (filtered_data()$UNEMPLOYED==-99){
-      "Too few responses to report"
-    }else{
-      paste(round(filtered_data()$UNEMPLOYED*100, digits=1), "%", sep="")
-    }
+  # Percentages of students in labour Force
+  output$labour<-renderUI({
     
-    if (nchar(unemployed) > 5){
-      imageWrapper_text(unemployed,"Unemployment rate",img = "img/Job search.png")
-      
-    }else{
-      imageWrapper2(unemployed,"Unemployment rate",img = "img/Job search.png")
-    }
+    req(filtered_data()$IN_LABR_MKT)
     
-  })
-  
-  
 
-  # Employment rate 
+    imageWrapper2(paste(round(filtered_data()$IN_LABR_MKT*100, digits=0), "%", sep=""),"In labour force",img = "img/labour_force.png")
+  })
+  
+  # Employment rate or employment_rate 
   
   output$employment_rate<-renderUI({
     
@@ -693,10 +624,10 @@ shinyServer(function(input, output, session){
     }else if (filtered_data()$EMPLOYED==-4){
       "More than 90%"
     }else if (filtered_data()$EMPLOYED==-10){
-      HTML("Minority")
+      HTML("Minority were","<br>", "employed")
       
     }else if (filtered_data()$EMPLOYED==-11){
-      HTML("Majority")
+      HTML("Majority were", "<br>", "employed")
       
     }else if (filtered_data()$EMPLOYED==-99){
       "Too few responses to report"
@@ -705,18 +636,48 @@ shinyServer(function(input, output, session){
     }
     
     
-    div(style="background: #E0EBF6;margin-bottom: 8px;display: flex;align-items:center;justify-content:center;border-radius: 5px;border: 2px solid #E0EBF6;height:9vh;",
-        span(employed, style="color: #2A64AB; font-size:2.2vw;margin: 2%;font-weight: bold;"),
-        span(HTML("of all respondents were employed"),  style="font-size:1.5vw;color: #2A64AB;")
-        
-    )
+    if (nchar(employed) > 4){
+      imageWrapper_text(employed,"Employment rate",img = "img/employment.png")
+      
+    }else{
+      imageWrapper2(employed,"Employment rate",img = "img/employment.png")
+    }
   
     
   })
- 
+  
+  output$unemploy_rate<-renderUI({
+    
+    req(filtered_data()$UNEMPLOYED)
+    
+    unemployed <- if(filtered_data()$UNEMPLOYED==-3){
+      "Fewer than 10%"
+    }else if (filtered_data()$UNEMPLOYED==-4){
+      "More than 90%"
+    }else if (filtered_data()$UNEMPLOYED==-12){
+      HTML("Minority were","<br>", "unemployed")
+      
+    }else if (filtered_data()$UNEMPLOYED==-13){
+      HTML("Majority were","<br>", "unemployed")
+      
+    }else if (filtered_data()$UNEMPLOYED==-99){
+      "Too few responses to report"
+    }else{
+      paste(round(filtered_data()$UNEMPLOYED*100, digits=1), "%", sep="")
+    }
+    
+    if (nchar(unemployed) > 5){
+      imageWrapper_text(unemployed,"Unemployment rate",img = "img/unemployment.png")
+      
+    }else{
+      imageWrapper2(unemployed,"Unemployment rate",img = "img/unemployment.png")
+    }
+
+  })
+
   
 
-  # Employed full-time 
+  # Employed full-time or part-time
   output$full_time<-renderUI({
     
     req(filtered_data()$EMPLOY_FULL_TIME)
@@ -726,10 +687,10 @@ shinyServer(function(input, output, session){
     }else if (filtered_data()$EMPLOY_FULL_TIME==-4){
       "More than 90%"
     }else if (filtered_data()$EMPLOY_FULL_TIME==-8){
-      HTML("Minority")
+      HMTL("Minority were", "<br", "employed full-time")
       
     }else if (filtered_data()$EMPLOY_FULL_TIME==-9){
-      HTML("Majority")
+      HTML("Majority were", "<br>", "employed full-time")
       
     }else if (filtered_data()$EMPLOY_FULL_TIME==-99){
       "Too few responses to report"
@@ -738,10 +699,10 @@ shinyServer(function(input, output, session){
     }
     
     if (nchar(employed_full_time) > 4){
-      box_wrapper(employed_full_time, "were employed full-time")
+      imageWrapper_text(employed_full_time,"Employed full-time",img = "img/full_time.png")
       
     }else{
-      box_wrapper(employed_full_time,"were employed full-time")
+      imageWrapper2(employed_full_time,"Employed full-time",img = "img/full_time.png")
     }
     
   })
@@ -755,10 +716,10 @@ shinyServer(function(input, output, session){
       }else if (filtered_data()$SELF_EMPLOYED==-4){
         "More than 90%"
       }else if (filtered_data()$SELF_EMPLOYED==-6){
-        HTML("Minority")
+        HTML("Minority were", "<br>", "self-employed")
         
       }else if (filtered_data()$SELF_EMPLOYED==-7){
-        HTML("Majority")
+        HTML("Majority were", "<br>", "self-employed")
         
       }else if (filtered_data()$SELF_EMPLOYED==-99){
         "Too few responses to report"
@@ -767,28 +728,15 @@ shinyServer(function(input, output, session){
       }
       
       if (nchar(self_employed) > 4){
-        box_wrapper2(self_employed,"were self-employed")
+        imageWrapper_text(self_employed,"Self-employed",img = "img/self_employed.png")
         
       }else{
-        box_wrapper2(self_employed,"were self-employed")
+        imageWrapper2(self_employed,"Self-employed",img = "img/self_employed.png")
       }
       
 
   })
-  
-  # were in a job related to their program
-  output$related_program_emp <- renderUI ({
-    req(filtered_data()$JOB_PROGRAM_RELATED)
-    box_wrapper2(paste0(round(filtered_data()$JOB_PROGRAM_RELATED*100,0),"%"),HTML("of employed respondents","<br>", "were in a job","<b>", "related to their program","<b/>"))
-    
-  })
-  
-  output$knowledge_skill_useful <- renderUI ({
-    req(filtered_data()$USEFUL_PERFORM_JOB)
-    box_wrapper(paste0(round(filtered_data()$USEFUL_PERFORM_JOB*100,0),"%"),HTML("said the knowledge and skills gained","<br>", "were","<b>", "useful in performing their job","<b/>"))
-    
-  })
-  
+ 
 
   
 
@@ -802,12 +750,6 @@ shinyServer(function(input, output, session){
   output$text3 <- renderUI({
     HTML(paste("<em>", "Former students were asked how helpful their program was in their development of a number of skills. Percentages are those who responded that their program was very helpful or helpful in developing the skill.","</em>","</p>"))
   })
-  
-  output$text_skill <- renderUI({
-    HTML(paste("<em>", "Select a skill from the dropdown menu on the right to view results by program area.","</em>","</p>"))
-  })
-  
-
   
   
 
@@ -878,7 +820,7 @@ shinyServer(function(input, output, session){
 
     students[students$CREDENTIAL==input$student_group, ] %>% 
       filter(INSTITUTION_NAME %in% input$institution) %>%
-      filter((PROGRAM_NAME == "All Programs") | (PROGRAM_NAME == "")) %>% 
+      filter((PROGRAM_NAME == "All Programs") | (PROGRAM_NAME == "")  ) %>% 
       mutate(
         fillColor=ifelse(PROGRAM_AREA_NAME==input$program,paste('rgba(',paste(col2rgb('#1a3f72'),collapse=", "),",1)"),
                          paste('rgba(',paste(col2rgb('#1a3f72'),collapse=", "),",0.5)"))) %>% 
@@ -889,35 +831,56 @@ shinyServer(function(input, output, session){
   })
 
   
-  # value_select2 <- reactive({
-  #   
-  #   req(input$select_further)
-  #   
-  #   data_plot_all()[,input$select_further] 
-  # })
-  # 
+  value_select2 <- reactive({
+    
+    req(input$select_further)
+    
+    data_plot_all()[,input$select_further] 
+  })
   
   
-  # value_select_all_programs <- reactive({
-  #   
-  #   req(input$select_further)
-  #   
-  #   data_plot_all_programs()[,input$select_further] 
-  # })
-  # 
-  # 
+  
+  value_select_all_programs <- reactive({
+    
+    req(input$select_further)
+    
+    data_plot_all_programs()[,input$select_further] 
+  })
+  
+  
   
 
   # Further Studies Plot under Demographics
-  output$plot_program_satisfaction <- renderPlotly ({
+  output$plot_program_furtherstudy <- renderPlotly ({
 
  
-    #req(data_plot_all()$FURTH_STUDIES)
+    req(data_plot_all()$FURTH_STUDIES)
     req(data_plot_all_programs()$PROGRAM_AREA_NAME)
    
-
-      plot_ly (x = data_plot_all_programs()$satisfaction_rate,
-               y = ~ reorder(data_plot_all_programs()$PROGRAM_AREA_NAME, data_plot_all_programs()$satisfaction_rate),
+    if ((input$program_name != "All Programs")  &  !(input$institution %in% all_inst)){
+      plot_ly (x = value_select2(),
+               y = ~ reorder(data_plot_all()$PROGRAM_NAME_FOR_CHART, value_select2()),textposition = 'left',
+               type = 'bar',
+               color=~I(data_plot_all()$fillColor)) %>% 
+        layout(title = '', titlefont = list(
+          family = "Myriad-Pro",
+          size = 16),
+          orientation = 'h',
+          xaxis = list(title = "",tickformat = "%",zeroline=FALSE,fixedrange=TRUE),
+          yaxis = list(title = "",fixedrange=TRUE),
+          margin = list(l = 220, pad=7)) %>% 
+        add_annotations(xref = 'x', yref = 'y',
+                        x =value_select2() , 
+                        y = reorder(data_plot_all()$PROGRAM_NAME_FOR_CHART, value_select2()),
+                        text = paste0(round(value_select2()*100, 0), '%'),
+                        showarrow = FALSE,xanchor = 'left',xshift = 3,opacity = 0.7) %>% 
+        config(displayModeBar = F)
+    
+ 
+      
+    } else{
+      plot_ly (x = value_select_all_programs(),
+               y = ~ reorder(data_plot_all_programs()$PROGRAM_AREA_NAME, value_select_all_programs()),
                type = 'bar',
                color=~I(data_plot_all_programs()$fillColor)) %>% 
         layout(title = '', titlefont = list(
@@ -928,12 +891,13 @@ shinyServer(function(input, output, session){
           yaxis = list(title = "",fixedrange=TRUE),
           margin = list(l = 220, pad=7)) %>% 
         add_annotations(xref = 'x', yref = 'y',
-                        x =data_plot_all_programs()$satisfaction_rate , 
-                        y = reorder(data_plot_all_programs()$PROGRAM_AREA_NAME, data_plot_all_programs()$satisfaction_rate),
-                        text = paste0(round(data_plot_all_programs()$satisfaction_rate*100, 0), '%'),
+                        x =value_select_all_programs() , 
+                        y = reorder(data_plot_all_programs()$PROGRAM_AREA_NAME, value_select_all_programs()),
+                        text = paste0(round(value_select_all_programs()*100, 0), '%'),
                         showarrow = FALSE,xanchor = 'left',xshift = 3,opacity = 0.7) %>% 
-        config(displayModeBar = F)  
-
+        config(displayModeBar = F)
+      
+    }
       
   })
   
@@ -944,11 +908,34 @@ shinyServer(function(input, output, session){
   
   output$plot_program_relate <- renderPlotly({
     
-    #req(data_plot_all()$PROGRAM_NAME)
-    #req(data_plot_all()$JOB_PROGRAM_RELATED)
+    req(data_plot_all()$PROGRAM_NAME)
+    req(data_plot_all()$JOB_PROGRAM_RELATED)
     req(data_plot_all_programs()$PROGRAM_AREA_NAME)
 
+    if ((input$program_name != "All Programs")  &  !(input$institution %in% all_inst)){
+      plot_ly (x = data_plot_all()$JOB_PROGRAM_RELATED,
+               y = ~ reorder(data_plot_all()$PROGRAM_NAME_FOR_CHART, data_plot_all()$JOB_PROGRAM_RELATED),
+               type = 'bar',
+               color=~I(data_plot_all()$fillColor))  %>% 
+        
+        #marker = list(color = paste('rgba(',paste(col2rgb('#1A3F72'),collapse=", "),",1)"))) %>% 
+        layout(orientation = 'h',
+               title = '', titlefont = list(
+                 
+                 family = "Myriad-Pro",
+                 size = 16),
+               xaxis = list(title = "",tickformat = "%",zeroline=FALSE,fixedrange=TRUE),
+               yaxis = list(title = "",fixedrange=TRUE),
+               margin = list(l = 220,pad=7)) %>% 
+        add_annotations(xref = 'x', yref = 'y',
+                        x =data_plot_all()$JOB_PROGRAM_RELATED , 
+                        y = reorder(data_plot_all()$PROGRAM_NAME_FOR_CHART, data_plot_all()$JOB_PROGRAM_RELATED),
+                        text = paste0(round(data_plot_all()$JOB_PROGRAM_RELATED*100, 0), '%'),
+                        showarrow = FALSE,xanchor = 'left',xshift = 3,opacity = 0.7) %>% 
+        config(displayModeBar = F)
 
+    
+      }else{
         
         plot_ly (x = data_plot_all_programs()$JOB_PROGRAM_RELATED,
                  y = ~ reorder(data_plot_all_programs()$PROGRAM_AREA_NAME, data_plot_all_programs()$JOB_PROGRAM_RELATED),
@@ -972,7 +959,9 @@ shinyServer(function(input, output, session){
           config(displayModeBar = F)
       
   
-
+      
+    }
+      
   })
   
 
@@ -981,11 +970,35 @@ shinyServer(function(input, output, session){
   
   output$plot_program_skill <- renderPlotly({
     
-    #req(data_plot_all()$PROGRAM_NAME)
-    #req(data_plot_all()$USEFUL_PERFORM_JOB)
+    req(data_plot_all()$PROGRAM_NAME)
+    req(data_plot_all()$USEFUL_PERFORM_JOB)
     req(data_plot_all_programs()$PROGRAM_AREA_NAME)
     
-
+    if ((input$program_name != "All Programs")  &  !(input$institution %in% all_inst)){
+      plot_ly (x = data_plot_all()$USEFUL_PERFORM_JOB,
+               y = ~ reorder(data_plot_all()$PROGRAM_NAME_FOR_CHART, data_plot_all()$USEFUL_PERFORM_JOB),
+               type = 'bar',
+               color=~I(data_plot_all()$fillColor_skill))  %>% 
+        
+        #marker = list(color = paste('rgba(',paste(col2rgb('#1A3F72'),collapse=", "),",1)"))) %>% 
+        layout(orientation = 'h',
+               title = '', titlefont = list(
+                 
+                 family = "Myriad-Pro",
+                 size = 16),
+               xaxis = list(title = "",tickformat = "%",zeroline=FALSE,fixedrange=TRUE),
+               yaxis = list(title = "",fixedrange=TRUE),
+               margin = list(l = 220,pad=7)) %>% 
+        add_annotations(xref = 'x', yref = 'y',
+                        x =data_plot_all()$USEFUL_PERFORM_JOB , 
+                        y = reorder(data_plot_all()$PROGRAM_NAME_FOR_CHART, data_plot_all()$USEFUL_PERFORM_JOB),
+                        text = paste0(round(data_plot_all()$USEFUL_PERFORM_JOB*100, 0), '%'),
+                        showarrow = FALSE,xanchor = 'left',xshift = 3,opacity = 0.7) %>% 
+        config(displayModeBar = F)
+      
+      
+    }else{
+      
       plot_ly (x = data_plot_all_programs()$USEFUL_PERFORM_JOB,
                y = ~ reorder(data_plot_all_programs()$PROGRAM_AREA_NAME, data_plot_all_programs()$USEFUL_PERFORM_JOB),
                type = 'bar',
@@ -1007,6 +1020,7 @@ shinyServer(function(input, output, session){
                         showarrow = FALSE,xanchor = 'left',xshift = 3,opacity = 0.7) %>% 
         config(displayModeBar = F)
 
+    }
     
   })
   
@@ -1037,9 +1051,32 @@ shinyServer(function(input, output, session){
 
   output$plot_program_switch <- renderPlotly({
  
-    #req(data_plot_all()$PROGRAM_NAME)
+    req(data_plot_all()$PROGRAM_NAME)
     req(data_plot_all_programs()$PROGRAM_AREA_NAME)
     
+    if ((input$program_name != "All Programs")  &  !(input$institution %in% all_inst)){
+      
+      data_plot_all() %>% 
+        plot_ly (x = value_select(),
+                 y = ~ reorder(PROGRAM_NAME_FOR_CHART, value_select()), # or get(input$select)
+                 type = 'bar',
+                 color=~I(data_plot_all()$fillColor)) %>% 
+        #marker = list(color = paste('rgba(',paste(col2rgb('#1A3F72'),collapse=", "),",1)"))) %>% 
+        layout(title = '', titlefont = list(
+          family = "Myriad-Pro",
+          size = 16),
+          orientation = 'h',
+          xaxis = list(title = "",tickformat = "%",zeroline=FALSE,fixedrange=TRUE),
+          yaxis = list(title = "",fixedrange=TRUE),
+          margin = list(l = 220, pad=7)) %>% 
+        add_annotations(xref = 'x', yref = 'y',
+                        x = value_select(), 
+                        y = ~ reorder(PROGRAM_NAME_FOR_CHART, value_select()),
+                        text = paste0(round(value_select()*100, 0), '%'),
+                        showarrow = FALSE,xanchor = 'left',xshift =7,opacity = 0.7) %>% 
+        config(displayModeBar = F)
+      
+    }else{
       data_plot_all_programs() %>% 
         plot_ly (x = value_select_satisfaction(),
                  y = ~ reorder(data_plot_all_programs()$PROGRAM_AREA_NAME, value_select_satisfaction()), # or get(input$select)
@@ -1060,7 +1097,8 @@ shinyServer(function(input, output, session){
         config(displayModeBar = F)
       
       
-
+      
+    }
 
   })
 
@@ -1078,23 +1116,18 @@ shinyServer(function(input, output, session){
     get(input$dataset)
   })
   
-  output$title_select <- renderUI({
-    HTML("Skill development by program area")
+  output$title_select <- renderText({
+    names(choices_skill[choices_skill==input$select])
   })
   
 
   
   output$title4 <- renderUI({
-    HTML("Working in a program-related job by program area")
-  })
-  
-  output$satisfaction_edu <- renderUI({
-    HTML("Satisfaction with education by program area")
-
+    HTML("Working in a program-related job")
   })
   
   output$title5 <- renderUI({
-    HTML("Knowledge and skills gained useful in performing job by program area")
+    HTML("Knowledge and skills gained useful in performing job")
   })
   
   data <- reactiveVal()
@@ -1119,46 +1152,13 @@ shinyServer(function(input, output, session){
     
   })
   
-  output$summary_filter <- renderUI ({
-    div(style="padding: 5px; margin-left:10px;color: #2A64AB;",
-      h5(HTML("<em>","<strong>","Results are based on:","</strong>","</em>")),
-      p(HTML("<em>",paste0(input$student_group,","," ", input$institution,","," ", input$program, ifelse(input$program_name==" "," ",",")," ", input$program_name),"</em>"))
-    )
-    
-  })
-  
-  output$summary_filter_employment <- renderUI ({
-    div(style="padding: 5px; margin-left:10px;color: #2A64AB;",
-        h5(HTML("<em>","<strong>","Results are based on:","</strong>","</em>")),
-        p(HTML("<em>",paste0(input$student_group,","," ", input$institution,","," ", input$program, ifelse(input$program_name==" "," ",",")," ", input$program_name),"</em>"))
-    )
-    
-  })
-  
-  output$summary_filter_skill <- renderUI ({
-    div(style="padding: 5px; margin-left:10px;color: #2A64AB;",
-        h5(HTML("<em>","<strong>","Results are based on:","</strong>","</em>")),
-        p(HTML("<em>",paste0(input$student_group,","," ", input$institution,","," ", input$program, ifelse(input$program_name==" "," ",",")," ", input$program_name),"</em>"))
-    )
-    
-  })
-  
-  
-  observeEvent(input$btn, {
-    enable("element")
-  })
-  
-  output$note <- renderUI ({
-    
-    div("This interactive tool allows you to filter by student group, institution, program area, and program name.", style = "font-style: italic;padding: 10px 10px 10px 30px;")
-  })
-  
+
 
 
   
 
-    
   
+    
 })
 
 

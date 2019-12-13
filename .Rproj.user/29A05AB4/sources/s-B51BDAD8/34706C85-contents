@@ -27,7 +27,7 @@
 
 box_wrapper <- function(value, title){
   div(class="example", style="border-radius: 5px;border: 2px solid #fff; display:flex; width: 100%; align-items:center;justify-content:center; flex-direction: column;color:#2A64AB;height: 150px;margin:2% 0 2% 0",
-         p(class="example2", paste0(round(value*100, digits=0), "%"), style= "font-weight: bold; font-size:2.2vw;"),
+         p(value, style= "font-weight: bold; font-size:2.2vw;"),
          p(title, style="text-align: center;font-size:  1.5vw;")
     )
 }
@@ -409,7 +409,7 @@ shinyServer(function(input, output, session){
   
   output$quality_education <- renderUI ({
     req(filtered_data()$instruction)
-    box_wrapper(filtered_data()$instruction,HTML("said the", "<b>","quality of instruction","</b>","<br>", "was very good or good"))
+    box_wrapper(paste0(round(filtered_data()$instruction * 100,0),"%"), HTML("said the", "<b>","quality of instruction","</b>","<br>", "was very good or good"))
 
   })
   
@@ -464,7 +464,7 @@ shinyServer(function(input, output, session){
   
   output$related_program <- renderUI ({
     req(filtered_data()$JOB_PROGRAM_RELATED)
-    box_wrapper(filtered_data()$JOB_PROGRAM_RELATED,HTML("of employed respondents","<br>", "were in a job","<b>", "related to their program","<b/>"))
+    box_wrapper(paste0(round(filtered_data()$JOB_PROGRAM_RELATED*100,0),"%"),HTML("of employed respondents","<br>", "were in a job","<b>", "related to their program","<b/>"))
     
   })
   
@@ -615,10 +615,17 @@ shinyServer(function(input, output, session){
 
   
   # EMPLOYMENT
-  # unemployment rate
-  
 
-  # wage - conditional - bachelor's degree display salary wage
+  # 1. Percentages of students in labour Force
+  output$labour<-renderUI({
+    
+    req(filtered_data()$IN_LABR_MKT)
+    
+    
+    imageWrapper2(paste(round(filtered_data()$IN_LABR_MKT*100, digits=0), "%", sep=""),"In labour force",img = "img/Gears.png")
+  })
+
+  # 2. wage - conditional - bachelor's degree display salary wage
   output$wage<-renderUI({
   
     req(input$student_group)
@@ -633,57 +640,16 @@ shinyServer(function(input, output, session){
     
     
     if (input$student_group=="Bachelor's Degree"){
-      imageWrapper2(wage,"Median annual salary",img = "img/median_wage.png")
+      imageWrapper2(wage,"Median annual salary",img = "img/Dollar.png")
     }else if (nchar(wage)>5){
-      imageWrapper_text(wage, "Median hourly wage",img = "img/median_wage.png")
+      imageWrapper_text(wage, "Median hourly wage",img = "img/Dollar.png")
     }else{
       
-      imageWrapper2(wage,"Median hourly wage",img = "img/median_wage.png")
+      imageWrapper2(wage,"Median hourly wage",img = "img/Dollar.png")
     }
   })
   
-      
-  # Percentages of students in labour Force
-  output$labour<-renderUI({
-    
-    req(filtered_data()$IN_LABR_MKT)
-    
-
-    imageWrapper2(paste(round(filtered_data()$IN_LABR_MKT*100, digits=0), "%", sep=""),"In labour force",img = "img/labour_force.png")
-  })
-  
-  # Employment rate or employment_rate 
-  
-  output$employment_rate<-renderUI({
-    
-    req(filtered_data()$EMPLOYED)
-    
-    employed <- if(filtered_data()$EMPLOYED==-3){
-      "Fewer than 10%"
-    }else if (filtered_data()$EMPLOYED==-4){
-      "More than 90%"
-    }else if (filtered_data()$EMPLOYED==-10){
-      HTML("Minority were","<br>", "employed")
-      
-    }else if (filtered_data()$EMPLOYED==-11){
-      HTML("Majority were", "<br>", "employed")
-      
-    }else if (filtered_data()$EMPLOYED==-99){
-      "Too few responses to report"
-    }else{
-      paste(round(filtered_data()$EMPLOYED*100, digits=0), "%", sep="")
-    }
-    
-    
-    if (nchar(employed) > 4){
-      imageWrapper_text(employed,"Employment rate",img = "img/employment.png")
-      
-    }else{
-      imageWrapper2(employed,"Employment rate",img = "img/employment.png")
-    }
-  
-    
-  })
+  # 3. Unemployment rate
   
   output$unemploy_rate<-renderUI({
     
@@ -694,10 +660,10 @@ shinyServer(function(input, output, session){
     }else if (filtered_data()$UNEMPLOYED==-4){
       "More than 90%"
     }else if (filtered_data()$UNEMPLOYED==-12){
-      HTML("Minority were","<br>", "unemployed")
+      HTML("Minority")
       
     }else if (filtered_data()$UNEMPLOYED==-13){
-      HTML("Majority were","<br>", "unemployed")
+      HTML("Majority")
       
     }else if (filtered_data()$UNEMPLOYED==-99){
       "Too few responses to report"
@@ -706,17 +672,51 @@ shinyServer(function(input, output, session){
     }
     
     if (nchar(unemployed) > 5){
-      imageWrapper_text(unemployed,"Unemployment rate",img = "img/unemployment.png")
+      imageWrapper_text(unemployed,"Unemployment rate",img = "img/Job search.png")
       
     }else{
-      imageWrapper2(unemployed,"Unemployment rate",img = "img/unemployment.png")
+      imageWrapper2(unemployed,"Unemployment rate",img = "img/Job search.png")
     }
-
+    
   })
-
+  
   
 
-  # Employed full-time or part-time
+  # Employment rate 
+  
+  output$employment_rate<-renderUI({
+    
+    req(filtered_data()$EMPLOYED)
+    
+    employed <- if(filtered_data()$EMPLOYED==-3){
+      "Fewer than 10%"
+    }else if (filtered_data()$EMPLOYED==-4){
+      "More than 90%"
+    }else if (filtered_data()$EMPLOYED==-10){
+      HTML("Minority")
+      
+    }else if (filtered_data()$EMPLOYED==-11){
+      HTML("Majority")
+      
+    }else if (filtered_data()$EMPLOYED==-99){
+      "Too few responses to report"
+    }else{
+      paste(round(filtered_data()$EMPLOYED*100, digits=0), "%", sep="")
+    }
+    
+    
+    div(style="background: #E0EBF6;margin-bottom: 8px;display: flex;align-items:center;justify-content:center;border-radius: 5px;border: 2px solid #E0EBF6;height:9vh;",
+        span(employed, style="color: #2A64AB; font-size:2.2vw;margin: 2%;font-weight: bold;"),
+        span(HTML("of all respondents were employed"),  style="font-size:1.5vw;color: #2A64AB;")
+        
+    )
+  
+    
+  })
+ 
+  
+
+  # Employed full-time 
   output$full_time<-renderUI({
     
     req(filtered_data()$EMPLOY_FULL_TIME)
@@ -726,10 +726,10 @@ shinyServer(function(input, output, session){
     }else if (filtered_data()$EMPLOY_FULL_TIME==-4){
       "More than 90%"
     }else if (filtered_data()$EMPLOY_FULL_TIME==-8){
-      HTML("Minority were", "<br", "employed full-time")
+      HTML("Minority")
       
     }else if (filtered_data()$EMPLOY_FULL_TIME==-9){
-      HTML("Majority were", "<br>", "employed full-time")
+      HTML("Majority")
       
     }else if (filtered_data()$EMPLOY_FULL_TIME==-99){
       "Too few responses to report"
@@ -738,10 +738,10 @@ shinyServer(function(input, output, session){
     }
     
     if (nchar(employed_full_time) > 4){
-      imageWrapper_text(employed_full_time,"Employed full-time",img = "img/full_time.png")
+      box_wrapper(employed_full_time, "were employed full-time")
       
     }else{
-      imageWrapper2(employed_full_time,"Employed full-time",img = "img/full_time.png")
+      box_wrapper(employed_full_time,"were employed full-time")
     }
     
   })
@@ -755,10 +755,10 @@ shinyServer(function(input, output, session){
       }else if (filtered_data()$SELF_EMPLOYED==-4){
         "More than 90%"
       }else if (filtered_data()$SELF_EMPLOYED==-6){
-        HTML("Minority were", "<br>", "self-employed")
+        HTML("Minority")
         
       }else if (filtered_data()$SELF_EMPLOYED==-7){
-        HTML("Majority were", "<br>", "self-employed")
+        HTML("Majority")
         
       }else if (filtered_data()$SELF_EMPLOYED==-99){
         "Too few responses to report"
@@ -767,15 +767,28 @@ shinyServer(function(input, output, session){
       }
       
       if (nchar(self_employed) > 4){
-        imageWrapper_text(self_employed,"Self-employed",img = "img/self_employed.png")
+        box_wrapper2(self_employed,"were self-employed")
         
       }else{
-        imageWrapper2(self_employed,"Self-employed",img = "img/self_employed.png")
+        box_wrapper2(self_employed,"were self-employed")
       }
       
 
   })
- 
+  
+  # were in a job related to their program
+  output$related_program_emp <- renderUI ({
+    req(filtered_data()$JOB_PROGRAM_RELATED)
+    box_wrapper2(paste0(round(filtered_data()$JOB_PROGRAM_RELATED*100,0),"%"),HTML("of employed respondents","<br>", "were in a job","<b>", "related to their program","<b/>"))
+    
+  })
+  
+  output$knowledge_skill_useful <- renderUI ({
+    req(filtered_data()$USEFUL_PERFORM_JOB)
+    box_wrapper(paste0(round(filtered_data()$USEFUL_PERFORM_JOB*100,0),"%"),HTML("said the knowledge and skills gained","<br>", "were","<b>", "useful in performing their job","<b/>"))
+    
+  })
+  
 
   
 
@@ -1133,6 +1146,11 @@ shinyServer(function(input, output, session){
   
   observeEvent(input$btn, {
     enable("element")
+  })
+  
+  output$note <- renderUI ({
+    
+    div("This interactive tool allows you to filter by student group, institution, program area, and program name.", style = "font-style: italic;padding: 10px 10px 10px 30px;")
   })
   
 
