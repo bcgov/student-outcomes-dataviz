@@ -57,9 +57,9 @@ shinyUI(tagList(dashboardPage(title="BC Student Outcomes Data Viewer",
 
     title = tags$div(class="banner",
                                                   
-                                                  a(href="http://outcomes.bcstats.gov.bc.ca/AboutUs/AboutStudentOutcomes.aspx",
+                                                  a(href="https://gov.bc.ca",
                                                     
-                                                    img(src = 'logo2.png', title = "BC Student Outcomes", height = "80px", alt = "British Columbia - BC Stats"),
+                                                    img(src = 'img/BCID_H_rgb_rev.svg', title = "Government of British Columbia", alt = "British Columbia - BC Stats"),
                                                     
                                                     onclick="gtag"
                                                     
@@ -91,9 +91,9 @@ shinyUI(tagList(dashboardPage(title="BC Student Outcomes Data Viewer",
       
       .main-header img {
       display:block;
-      width:90px;
+      width:150px;
       height: 50px;
-      padding-top:10px;padding-right:10px;
+      padding-top:10px;
       }"
       ),
     
@@ -126,7 +126,7 @@ shinyUI(tagList(dashboardPage(title="BC Student Outcomes Data Viewer",
 
             , trigger = 'show1',
             size = 'large',
-            p("Each year, tens of thousands of former post-secondary students are asked about their educational experiences, subsequent employment, and further studies. Find out what former students are doing one to two years after their B.C. post-secondary education.",style="font-size:16px;text-align: center;"), br(), 
+            p("Each year, tens of thousands of former post-success students are asked about their educational experiences, subsequent employment, and further studies. Find out what former students are doing one to two years after their B.C. post-success education.",style="font-size:16px;text-align: center;"), br(), 
             p("Are they",span ("employed?", style="color: blue; text-aling:center;"),style="font-size:16px;text-align: center;"), br(),
             p("Did they go ",span (" back to school?", style="color: blue; text-aling:center;"),style="font-size:16px;text-align: center;"), br(),
             p("Were they ",span ("satisfied", style="color: blue; text-aling:center;"),style="font-size:16px;text-align: center;", span("with their education?")), br(),
@@ -151,6 +151,20 @@ shinyUI(tagList(dashboardPage(title="BC Student Outcomes Data Viewer",
                     background:#2A64AB
                     }
                     
+                    .box.box-solid.box-success>.box-header {
+                    color: #2A64AB;
+                    background:#E0EBF6;
+                    font-weight: bold;
+                    
+                    }
+                    
+                    .box.box-solid.box-success{
+                    border-bottom-color:#1a3f72;
+                    border-left-color:#1a3f72;
+                    border-right-color:#1a3f72;
+                    border-top-color:#1a3f72;
+                    }
+                    
                     .box.box-solid.box-primary{
                     border-bottom-color:#1a3f72;
                     border-left-color:#1a3f72;
@@ -169,7 +183,7 @@ shinyUI(tagList(dashboardPage(title="BC Student Outcomes Data Viewer",
 
 #### Summary Section------------
     
-    fluidRow(box(id="summary", uiOutput("text1"),title = viewMoreTitle(sectionID = "summary", title = div(tags$b("Summary"),style="font-size: 25px;font-family: Myriad-Pro;")), width=12,status="primary",collapsible = TRUE,solidHeader = TRUE,
+    fluidRow(box(id="summary", uiOutput("text1"),title = viewMoreTitle(sectionID = "summary", title = div(tags$b("Summary"),style="font-size: 25px;")), width=12,status="primary",collapsible = TRUE,solidHeader = TRUE,
       fluidRow(h3("About the respondents", style="margin:10px;color: #2A64AB;")),           
         
         fluidRow(
@@ -192,24 +206,22 @@ shinyUI(tagList(dashboardPage(title="BC Student Outcomes Data Viewer",
     
 #### Satisfaction and further education section--------------
      fluidRow(
-       box(id="dem", title=viewMoreTitle(sectionID = "dem_link", title = uiOutput("satisfaction_edu")),width=12,solidHeader = TRUE,status="primary",collapsible = TRUE,collapsed=FALSE,
-           fluidRow(column(12, uiOutput("not_showing_program_satisfaction"))), 
-           fluidRow(column(8,offset=1, withSpinner(plotlyOutput("plot_program_satisfaction", height = "65vh",width = "100%"))),
+       box(id="dem", title=viewMoreTitle(sectionID = "dem_link", title = uiOutput("satisfaction_edu")),width=12,solidHeader = TRUE,status="success",collapsible = TRUE,collapsed=FALSE,
+           fluidRow(column(8,offset=1, withSpinner(plotlyOutput("plot_program_satisfaction", height = "65vh",width = "100%")))
                      #column(3,selectInput("select_further", uiOutput("satisfaction_text"),choices= choices_result, selected=""))
                     )
           ))),
        
 
-    box(id="sat",uiOutput ("text3"), title=viewMoreTitle(sectionID = "satisfactionlink", title = div(tags$b("Skill Development"), style="font-size: 25px;font-family: Myriad-Pro")), status = "primary", solidHeader = TRUE, collapsible = TRUE, width = 12,collapsed=FALSE,
+    box(id="sat",uiOutput ("text3"), title=viewMoreTitle(sectionID = "satisfactionlink", title = div(tags$b("Skill Development"), style="font-size: 25px;")), status = "primary", solidHeader = TRUE, collapsible = TRUE, width = 12,collapsed=FALSE,
 
         fluidRow(column(6,offset=2, plotlyOutput("plot_skills", height = "65vh",width = "100%"))),
-        fluidRow(box(
+        fluidRow(box(uiOutput ("text_skill"),
           width=12,
-                          title = textOutput("title_select"),
-                          status = "primary",
+                          title = uiOutput("title_select"),
+                          status = "success",
                           solidHeader = TRUE,
                           collapsible = TRUE,
-          fluidRow(column(12, uiOutput("not_showing_program_switch"))), 
                      fluidRow(column(8,offset=1, plotlyOutput("plot_program_switch", height = "65vh")),
                               column(3,selectInput("select", "See more results by program area…",choices= choices_skill, selected="Reading & Comprehending"))),
                      fluidRow(
@@ -217,7 +229,8 @@ shinyUI(tagList(dashboardPage(title="BC Student Outcomes Data Viewer",
                               div(tags$b(tags$em(helpText("Note: Those who responded that their program was very helpful or helpful in developing this skill."))))))
                      
                         #div(style="display:center-align"))
-        ))
+        )),
+        fluidRow(uiOutput("summary_filter_skill"))
         
         
         
@@ -225,7 +238,7 @@ shinyUI(tagList(dashboardPage(title="BC Student Outcomes Data Viewer",
     uiOutput("draft"),
         
     fluidRow(box(
-      id="emp",title=viewMoreTitle(sectionID = "employmentlink", title = div(tags$b("Employment"),style="font-size: 25px;font-family: Myriad-Pro")), status = "primary", solidHeader = TRUE, collapsible = TRUE, width = 12,collapsed=FALSE,
+      id="emp",title=viewMoreTitle(sectionID = "employmentlink", title = div(tags$b("Employment"),style="font-size: 25px;")), status = "primary", solidHeader = TRUE, collapsible = TRUE, width = 12,collapsed=FALSE,
          
       column(width=4, 
                    fluidRow(uiOutput("labour"),bsTooltip(id = "labour", title = "Respondents who were employed or were looking and available for work.", placement = "right", trigger = "hover")),
@@ -246,10 +259,9 @@ shinyUI(tagList(dashboardPage(title="BC Student Outcomes Data Viewer",
           box(width=12, 
             #div(tags$em("Working in a program-related job by program area",style="font-size: 16px;margin-left: 210px")),
             title = uiOutput("title4"),
-            status = "primary",
+            status = "success",
             solidHeader = TRUE,
             collapsible = TRUE,
-            fluidRow(column(12, uiOutput("not_showing_program_relate"))), 
             column(width=8, offset=1, 
                    fluidRow(withSpinner(plotlyOutput("plot_program_relate", height = "65vh"))),
                    fluidRow(div(tags$b(tags$em(helpText("Note: Main job very or somewhat related to program. Based on employed respondents.")))))
@@ -258,14 +270,14 @@ shinyUI(tagList(dashboardPage(title="BC Student Outcomes Data Viewer",
         fluidRow(
             box(width=12, 
             title = uiOutput("title5"),
-            status = "primary",
+            status = "success",
             solidHeader = TRUE,
             collapsible = TRUE,
-            fluidRow(column(12, uiOutput("not_showing_program_skill"))), 
             column(width=8,offset=1, 
                    fluidRow(withSpinner(plotlyOutput("plot_program_skill", height = "65vh"))),
                    fluidRow(div(tags$b(tags$em(helpText("Note: Knowledge and skills gained in program very or somewhat useful in performing job. Based on employed respondents.")))))
           ))),
+      fluidRow(uiOutput("summary_filter_employment")),
           
           fluidRow(viewMoreButton(sectionID = "summary",style="background-color: #8dc63f;color: white;border-color: #ddd;border-radius: 0;"),style="padding: 0 5px;text-align: center;"))
     )

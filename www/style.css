@@ -25,7 +25,7 @@ src: url('BCSans-BoldItalic.woff2') format('woff2'), /* Optimized for very moder
 url('BCSans-BoldItalic.woff') format('woff'); /* Modern Browsers */
 }
 
-html, body, h1, h2, h3, h4, h5, h6 {
+html, body {
   font-family: BCSans;
 }
 
@@ -44,8 +44,9 @@ html, body, h1, h2, h3, h4, h5, h6 {
 
 
 .box-header {
-   font-weight: bold;
-   text-align:center;
+  font-family: BCSans;
+  font-weight: bold;
+  text-align:center;
 }
 
 
@@ -129,9 +130,6 @@ body {  min-width:700px; }
 .skin-blue .main-sidebar {
   background-color: #003366;
 }
-
-
-
 
 
 
