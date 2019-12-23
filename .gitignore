@@ -1,6 +1,4 @@
 *.html
 .Rproj.user
 .RData
-data/SO_Data_Viewer_Data_2016_2018.csv
-data/SO_Data_Viewer_Data_2016_2018_V2.csv
 
