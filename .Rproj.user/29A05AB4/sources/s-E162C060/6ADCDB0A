@@ -1,0 +1,25 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1576709771064.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "0",
+    "id" : "6ADCDB0A",
+    "lastKnownWriteTime" : 1576792225,
+    "last_content_update" : 1576792225895,
+    "path" : "C:/github/student_outcomes_test/www/style.css",
+    "project_path" : "www/style.css",
+    "properties" : {
+        "cursorPosition" : "8,13",
+        "scrollLine" : "0"
+    },
+    "read_only" : false,
+    "read_only_alternatives" : [
+    ],
+    "relative_order" : 4,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "css"
+}

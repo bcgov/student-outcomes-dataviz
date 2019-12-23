@@ -1,0 +1,277 @@
+@font-face{
+font-family: BCSans;
+font-style: normal;
+src: url('BCSans-Regular.woff2') format('woff2'), /* Optimized for very modern browsers */ 
+url('BCSans-Regular.woff') format('woff'); /* Modern Browsers */
+}
+
+@font-face{
+font-family: BCSans;
+font-style: italic;
+src: url('BCSans-Italic.woff2') format('woff2'), /* Optimized for very modern browsers */ 
+url('BCSans-Italic.woff') format('woff'); /* Modern Browsers */
+}
+@font-face{
+font-family: BCSans;
+font-weight: 700;
+src: url('BCSans-Bold.woff2') format('woff2'), /* Optimized for very modern browsers */ 
+url('BCSans-Bold.woff') format('woff'); /* Modern Browsers */
+}
+@font-face{
+font-family: BCSans;
+font-style: italic;
+font-weight: 700;
+src: url('BCSans-BoldItalic.woff2') format('woff2'), /* Optimized for very modern browsers */
+url('BCSans-BoldItalic.woff') format('woff'); /* Modern Browsers */
+}
+
+html, body {
+  font-family: BCSans;
+}
+
+
+.content-wrapper,
+.right-side {
+  background-color: black;
+}
+
+.sidebar-toggle {
+  padding-left: 0px !important;
+}
+
+
+
+
+.box-header {
+  font-family: BCSans;
+  font-weight: bold;
+  text-align:center;
+}
+
+
+.downloadHandler_alldata{
+	background-color:#1a3f72;
+	color:white;
+	margin-left: 10px;
+}
+
+
+.img {
+    display: block;
+    width: 100%;
+    height: auto;
+    max-width:100%;
+}
+
+
+body {  min-width:700px; }
+
+.main-header {
+  background-color: #003366;
+  border-bottom: 2px solid #fcba19;
+  padding: 0 65px 0 65px;
+  color: #fff;
+  display: flex;
+  height: 65px;
+  top: 0;
+  position: fixed;
+  width: 100%;
+}
+
+.main-header .h4 {
+  font-weight: normal;  /* 400 */
+  margin: 5px 5px 0 18px;
+}
+
+.main-header .banner {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  margin: 0 10px 0 0;
+  /* border-style: dotted;
+  border-width: 1px;
+  border-color: lightgrey; */
+}
+
+
+
+/*
+  These are sample media queries only. Media queries are quite subjective
+  but, in general, should be made for the three different classes of screen
+  size: phone, tablet, full. 
+*/
+
+
+
+.skin-blue .main-header .navbar {
+    background-color: #003366;
+}
+
+.skin-blue .main-header .logo {
+    background-color: #003366;
+}
+
+
+
+/* logo */
+.skin-blue .sidebar-toggle:hover {
+  background-color: #003366;
+  
+}
+
+/* logo */
+.skin-blue .main-header .logo:hover {
+  background-color: #003366;
+
+}
+
+/* main sidebar */
+.skin-blue .main-sidebar {
+  background-color: #003366;
+}
+
+.genderage {
+  display:flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.imgtext {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  color: #2A64AB
+}
+
+.gender {
+  display: flex;
+  flex-direction: column;
+  margin: 10px;
+  
+}
+
+.malefemale {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.malefemale > h1:first-child {
+  font-weight: bold;
+  padding-right: 10px;
+  font-size: calc(15px + 1vw);
+  text-align: right;
+}
+
+.malefemale h1:nth-of-type(2) {
+  font-size: calc(10px + 1vw);
+  text-align: left;
+  
+}
+
+
+.boxwrapper {
+  border-radius: 5px;
+  border: 2px solid #fff;
+  display:flex;
+  width: 100%;
+  align-items:center;
+  justify-content:center;
+  flex-direction: column;
+  color:#2A64AB;
+  height: 150px;
+  margin:2% 0 2% 0;
+}
+
+.boxwrapper2 {
+  background-color: #E0EBF6;
+  border-radius: 5px;
+  border: 2px solid #fff;
+  display:flex; 
+  width: 100%; 
+  align-items:center;
+  justify-content:center;
+  flex-direction: column;
+  color:#2A64AB;
+  height: 150px;
+  margin:2% 0 2% 0;
+}
+
+#p1 {
+  font-weight: bold;
+  font-size:calc(15px + 1.5vw);
+}
+
+#p2 {
+  text-align: center;
+  font-size: calc(9px + 1vw);
+}
+
+.small-box.bg-red {
+  height: 115px ;
+  background-color: #ffffff !important;
+  color: black !important;
+  border-style: none !important;
+  
+}
+
+.box.box-solid.box-primary > .box-header {
+  color:#fff;
+  background:#2A64AB
+}
+                    
+.box.box-solid.box-success>.box-header {
+  color: #2A64AB;
+  background:#E0EBF6;
+  font-weight: bold;
+}
+                    
+.box.box-solid.box-success{
+  border-bottom-color:#1a3f72;
+  border-left-color:#1a3f72;
+  border-right-color:#1a3f72;
+  border-top-color:#1a3f72;
+}
+                    
+.box.box-solid.box-primary{
+  border-bottom-color:#1a3f72;
+  border-left-color:#1a3f72;
+  border-right-color:#1a3f72;
+  border-top-color:#1a3f72;
+}
+
+
+.age {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #2A64AB;
+
+}
+
+#age1 {
+  font-weight: bold;
+  color: #2A64AB;
+  margin:3%;
+  font-size:calc(15px + 1.5vw);
+}
+
+#age2 {
+  color: #2A64AB;
+  flex-basis: 300px;
+  font-size:calc(10px + 1vw);
+}
+
+@media only screen and (max-width: 1000px) {
+  .genderage {
+    flex-direction: column;
+  }
+}  
+
+
+
+
+

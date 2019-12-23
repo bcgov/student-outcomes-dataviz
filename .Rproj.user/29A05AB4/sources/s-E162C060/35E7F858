@@ -1,0 +1,25 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1576521679087.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "2138216345",
+    "id" : "35E7F858",
+    "lastKnownWriteTime" : 1577120586,
+    "last_content_update" : 1577120586407,
+    "path" : "C:/github/student_outcomes_test/global.R",
+    "project_path" : "global.R",
+    "properties" : {
+        "cursorPosition" : "93,135",
+        "scrollLine" : "63"
+    },
+    "read_only" : false,
+    "read_only_alternatives" : [
+    ],
+    "relative_order" : 3,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}
