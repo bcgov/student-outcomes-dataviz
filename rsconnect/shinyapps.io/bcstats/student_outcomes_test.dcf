@@ -5,6 +5,6 @@ account: bcstats
 server: shinyapps.io
 hostUrl: https://api.shinyapps.io/v1
 appId: 679550
-bundleId: 2663718
+bundleId: 2688242
 url: https://bcstats.shinyapps.io/student_outcomes_test/
-when: 1576198144.10612
+when: 1577123133.92885

@@ -24,32 +24,56 @@
 
 # Read libraries
 
+gender_age_function <- function(male, female, age){
+  
+  div(class="genderage",
+      div(class= "imgtext", 
+          tags$img(src = "img/People.png", width = "80px", height = "80px", style="vertical-align: middle; height: 50%;max-weight: 100%; float:left;"),
+          div(class="gender",
+              div(class="malefemale",
+                  h1(male),
+                  h1("were male")
+              ),
+              div(class="malefemale", 
+                  h1(female),
+                  h1("were female")
+              )
+          )
+      ),
+      div(class="age",
+          tags$img(src = "img/Birthday_cake.png", width = "90px", height = "90px", style="float:left;"),
+          h1(id = "age1", round(age)),
+          h1(id = "age2", HTML("was the", "<b>","median age","</b>","<br>","at the time of the survey"))
+      )
+      
+  )
+  
+}
+
 
 box_wrapper <- function(value, title){
-  div(class="example", style="border-radius: 5px;border: 2px solid #fff; display:flex; width: 100%; align-items:center;justify-content:center; flex-direction: column;color:#2A64AB;height: 150px;margin:2% 0 2% 0",
-         p(value, style= "font-weight: bold; font-size:2.2vw;"),
-         p(title, style="text-align: center;font-size:  1.5vw;")
+  div(class="boxwrapper",
+         p(id = "p1", value),
+         p(id = "p2", title)
     )
 }
 
 box_wrapper2 <- function(value, title){
-  div(style="background-color: #E0EBF6; border-radius: 5px;border: 2px solid #fff; display:flex; width: 100%; align-items:center;justify-content:center; flex-direction: column;color:#2A64AB;height: 150px;margin:2% 0 2% 0;",
-      p(value, style= "font-weight: bold; font-size:2.2vw;"),
-      p(title, style="text-align: center;font-size: 1.5vw;")
+  div(class="boxwrapper2",
+      p(id = "p1", value),
+      p(id = "p2", title)
   )
 }
 
 
 
 
-
-
 imageWrapper2<-function(value,title="",img, width="100%",height="200px"){
-  div(style="background: #fff;margin-bottom: 8px;",
-      div(title,style="background: #fff;color: #1a3f72;font-size: 1.5vw;font-weight: bold;padding: 7px 10px; text-align: center"),
+  div(style="background: #fff;margin-bottom: 8px;color:#2A64AB;",
+      div(title,style="background: #fff;color:#2A64AB;font-size: calc(9px + 1vw);;font-weight: bold;padding: 7px 10px; text-align: center"),
       div(style="width:33.3%; height: 130px; margin:0 auto;display:flex; align-items:center;justify-content:center;",
-          tags$img(src=img, style="max-height:100%;height: 7vw;float:left;"),
-          p(value, style="margin:5%; font-weight: bold;font-size:2.5vw;")
+          tags$img(src=img, style="height: 80%; vertical-align: middle;max-widtht: 100%; float:left;"),
+          p(value, style="margin:5%; font-weight: bold;font-size:calc(15px + 1.5vw);")
       )
   )
   
@@ -57,11 +81,11 @@ imageWrapper2<-function(value,title="",img, width="100%",height="200px"){
 
 
 imageWrapper_text<-function(value,title="",img, width="100%",height="200px"){
-  div(style="background: #fff;margin-bottom: 8px;",
-      div(title,style="background: #fff;color: #1a3f72;font-size: 1.5vw;font-weight: bold;padding: 7px 10px; text-align: center"),
+  div(style="background: #fff;margin-bottom: 8px;color:#2A64AB;",
+      div(title,style="background: #fff;color:#2A64AB;font-size: 1.5vw;font-weight: bold;padding: 7px 10px; text-align: center"),
       div(style="width:33.3%; height: 130px; margin:0 auto;display:flex; align-items:center;justify-content:center;",
-          tags$img(src=img, style="max-height:100%;height: 7vw; float:left;"),
-          p(value, style="margin:5%; font-weight: bold;font-size:1.2vw;")
+          tags$img(src=img, style="height: 80%; vertical-align: middle;max-widtht: 100%; float:left;"),
+          p(value, style="margin:5%; font-weight: bold;font-size:calc(9px + 1vw);")
       )
   )
   
@@ -82,57 +106,57 @@ customImageValueBox_text<-function(value,subtitle,img,imageHeight= 4,color = "aq
 }
 
 # creating side by side valuebox
-sidebysideValueBox<-function(title,value1,value1title,img1,value2,value2title,img2,color="aqua",width=4,href=NULL){
-  shinydashboard:::validateColor(color)
+# sidebysideValueBox<-function(title,value1,value1title,img1,value2,value2title,img2,color="aqua",width=4,href=NULL){
+#   shinydashboard:::validateColor(color)
+#   
+#   if(!is.numeric(value1)){
+#     stop("value1 is not numeric")
+#   }
+#   if(!is.numeric(value2)){
+#     stop("value2 is not numeric")
+#   }
+#   v1Larger<-value1>value2
+#   
+#   scales<-c(75,75)
+#   if(v1Larger){
+#     scales[1]<-75
+#     scales[2]<-round(75*sqrt(value2/value1))
+#   }else{
+#     scales[1]<-round(75*sqrt(value1/value2))
+#     scales[2]<-75
+#   }
+#   
+#   if(any(scales<30)){
+#     scales[which(scales<30)]<-30
+#   }
+#   
   
-  if(!is.numeric(value1)){
-    stop("value1 is not numeric")
-  }
-  if(!is.numeric(value2)){
-    stop("value2 is not numeric")
-  }
-  v1Larger<-value1>value2
-  
-  scales<-c(75,75)
-  if(v1Larger){
-    scales[1]<-75
-    scales[2]<-round(75*sqrt(value2/value1))
-  }else{
-    scales[1]<-round(75*sqrt(value1/value2))
-    scales[2]<-75
-  }
-  
-  if(any(scales<30)){
-    scales[which(scales<30)]<-30
-  }
-  
-  
-  boxContent <- div(class = paste0("small-box bg-", color), 
-                    div(class = "inner",style="height:100%;",
-                        
-                      div(class="value1",style="width:49%;height:100%; display: inline-block;",
-                          div(style="display: inline-block;width:auto;height:auto;vertical-align: top;padding-right:5px;",
-                              tags$i(style="position: relative;top: 5px;right:0px;float:right;",
-                                     tags$img(src=img1,style=paste0("height:",scales[1],"px;vertical-align: bottom; max-width:75px;")))),
-                          div(style="text-align: center;position:absolute;",h3(paste0(value1,"%", sep=""), style="font-size:1.9vw;"),p(value1title),style="display:inline-block;")),
-                      div(class="value2",style="width:49%;height: 100%; display: inline-block;right:0px;float:right;text-align:center;",
-
-                          div(style="display: inline-block;width:auto;height:auto;vertical-align: top;padding-right:5px;",
-                              tags$i(style="position: relative;top: 5px;right:0px;float:right;",
-                                     tags$img(src=img2,style=paste0("height:",scales[2],"px;vertical-align: bottom; max-width:75px;")))),
-                          div(style="text-align: center;position:absolute;",h3(paste0(value2,"%",sep=""),style="font-size:1.9vw;"),p(value2title),style="display:inline-block;")
-                    )
-                    )
-  )
-  
-  if (!is.null(href)) 
-    boxContent <- a(href = href, boxContent)
-  
-  div(class = if (!is.null(width)) 
-    paste0("col-sm-", width), boxContent)
-
-  
-}
+#   boxContent <- div(class = paste0("small-box bg-", color), 
+#                     div(class = "inner",style="height:100%;",
+#                         
+#                       div(class="value1",style="width:49%;height:100%; display: inline-block;",
+#                           div(style="display: inline-block;width:auto;height:auto;vertical-align: top;padding-right:5px;",
+#                               tags$i(style="position: relative;top: 5px;right:0px;float:right;",
+#                                      tags$img(src=img1,style=paste0("height:",scales[1],"px;vertical-align: bottom; max-width:75px;")))),
+#                           div(style="text-align: center;position:absolute;",h3(paste0(value1,"%", sep=""), style="font-size:1.9vw;"),p(value1title),style="display:inline-block;")),
+#                       div(class="value2",style="width:49%;height: 100%; display: inline-block;right:0px;float:right;text-align:center;",
+# 
+#                           div(style="display: inline-block;width:auto;height:auto;vertical-align: top;padding-right:5px;",
+#                               tags$i(style="position: relative;top: 5px;right:0px;float:right;",
+#                                      tags$img(src=img2,style=paste0("height:",scales[2],"px;vertical-align: bottom; max-width:75px;")))),
+#                           div(style="text-align: center;position:absolute;",h3(paste0(value2,"%",sep=""),style="font-size:1.9vw;"),p(value2title),style="display:inline-block;")
+#                     )
+#                     )
+#   )
+#   
+#   if (!is.null(href)) 
+#     boxContent <- a(href = href, boxContent)
+#   
+#   div(class = if (!is.null(width)) 
+#     paste0("col-sm-", width), boxContent)
+# 
+#   
+# }
 
 
 ageImageValueBox<-function(value,img,color = "aqua", width = 1,height="115px",href = NULL){
@@ -159,8 +183,6 @@ shinyServer(function(input, output, session){
   
   toggleModal(session, "startupModal", toggle = "open")
 
-
-  
   # suppress warnings  
   storeWarn<- getOption("warn")
   options(warn = -1) 
@@ -171,20 +193,15 @@ shinyServer(function(input, output, session){
                 selected = "Apprenticeship",
                 width = 315)
       )
-          
-
   })
-  
-
   
 
   output$institution <- renderUI({
     div(style="display: inline-block;",
-    selectizeInput("institution", "2. Institution",choices= as.character(unique(students$INSTITUTION_NAME[students$INSTITUTION_NAME==as.character(unique(students$INSTITUTION_NAME))[1]])),
+    selectizeInput("institution", "2. Institution",choices= as.character(unique(students$INSTITUTION_NAME)),
                 width = 315,
                 selected=NULL)
     )
-  
 
   })
   
@@ -198,7 +215,7 @@ shinyServer(function(input, output, session){
                     students$PROGRAM_AREA_NAME[
                       students$student_group==as.character(unique(students$student_group))[1] & 
                         students$INSTITUTION_NAME==as.character(unique(students$INSTITUTION_NAME[students$student_group==as.character(unique(students$student_group))[1]]))[1]])),
-                width = 315,selected=NULL
+                width = 315,selected="Overall"
                 )
     )
     
@@ -225,8 +242,6 @@ shinyServer(function(input, output, session){
       
       return(NULL)
     }
-    
-   
 
  
   })
@@ -244,8 +259,8 @@ shinyServer(function(input, output, session){
   observeEvent(c(input$student_group,input$institution),{
     
     updateSelectInput(session,'program',
-                      choices=unique(students$PROGRAM_AREA_NAME[students$CREDENTIAL==input$student_group &
-                                                                  students$INSTITUTION_NAME==input$institution]))
+                      choices=sort(unique(students$PROGRAM_AREA_NAME[students$CREDENTIAL==input$student_group &
+                                                                  students$INSTITUTION_NAME==input$institution])), selected = "Overall")
   })
   
 
@@ -256,7 +271,7 @@ shinyServer(function(input, output, session){
     updateSelectInput(session,'program_name',
                       choices=sort(unique(students$PROGRAM_NAME[students$CREDENTIAL==input$student_group &
                                                              students$INSTITUTION_NAME==input$institution & 
-                                                             students$PROGRAM_AREA_NAME==input$program])))
+                                                             students$PROGRAM_AREA_NAME==input$program])),  selected = "All Programs")
   })
   
 
@@ -272,15 +287,15 @@ shinyServer(function(input, output, session){
   #}
   #)
   
-  # error message to select an institution for bachelor's degree
-  output$alert <- renderUI({
-    req(input$student_group)
-    if((input$student_group =="Bachelor's Degree") & (input$institution =="") ){
-      HTML(paste0("<div style='color:white;padding-left:18px;padding-top:20px;font-size: 14px;'>","<b>", "Please select an institution","<b>","</div>"))
-      }else{
-        NULL
-        }
-  })
+  # # error message to select an institution for bachelor's degree
+  # output$alert <- renderUI({
+  #   req(input$student_group)
+  #   if((input$student_group =="Bachelor's Degree") & (input$institution =="") ){
+  #     HTML(paste0("<div style='color:white;padding-left:18px;padding-top:20px;font-size: 14px;'>","<b>", "Please select an institution","<b>","</div>"))
+  #     }else{
+  #       NULL
+  #       }
+  # })
   
   
 
@@ -301,8 +316,8 @@ shinyServer(function(input, output, session){
 
     
     students[students$CREDENTIAL==input_CREDENTIAL, ] %>%
-      filter( INSTITUTION_NAME %in% input_institution) %>%
-      filter (PROGRAM_AREA_NAME%in% input_program) %>% 
+      filter(INSTITUTION_NAME %in% input_institution) %>%
+      filter (PROGRAM_AREA_NAME %in% input_program) %>% 
       #filter(PROGRAM_NAME %in% input_program_name) %>% 
       filter (if(!(input$institution %in% all_inst)) PROGRAM_NAME %in% input_program_name else TRUE)
 
@@ -323,16 +338,17 @@ shinyServer(function(input, output, session){
  
 
   # NEW
-  output$gender <- renderUI ({
+  output$gender_age <- renderUI ({
     
     req(filtered_data()$MALE)
-    
+    req(filtered_data()$AGE)
+
     male <- if(filtered_data()$MALE==-3){
       "Fewer than 10%"
     }else if (filtered_data()$MALE==-4){
       "More than 90%"
     }else if (filtered_data()$MALE==-5){
-      "Majority"
+      "The majority"
       
     }else if (filtered_data()$MALE==-99){
       "Too few responses to report"
@@ -347,7 +363,7 @@ shinyServer(function(input, output, session){
     }else if (filtered_data()$FEMALE==-4){
       "More than 90%"
     }else if (filtered_data()$FEMALE==-2){
-      "Majority"
+      "The majority"
       
     }else if (filtered_data()$FEMALE==-99){
       "Too few responses to report"
@@ -357,25 +373,51 @@ shinyServer(function(input, output, session){
       paste(round(filtered_data()$FEMALE*100, digits=0), "%", sep="")
     }
     
-    
-    
-    
-    
-    div(
-      div(class= "img_text", style="display: flex;flex-direction: row;justify-content: center;align-items: center;color: #2A64AB",
-          tags$img(src = "img/People.png", width = "80px", height = "80px", style="vertical-align: middle; height: 50%;max-weight: 100%; float:left;"),
-          div(class="gender", style="display: flex;flex-direction: column;margin: 10px;;",
-              div(class="male", style="display: flex;flex-direction: row;justify-content: space-between;align-items: center;",
-                  h1(male,style=";font-weight: bold;padding-right: 10px;font-size: 2vw; text-align: right;"),
-                  h1("were male", style="font-size:1.5vw;text-align: left;")
-              ),
-              div(class="female", style="display: flex;flex-direction: row;justify-content: space-between;align-items: center;",
-                  h1(female, style="font-weight: bold;padding-right: 10px; font-size: 2vw; text-align: right;"),
-                  h1("were female", style="font-size: 1.5vw; text-align: left;")
-              )
-          )
+  
+    if (female == "") {
+      div(class="genderage",
+        div(class= "imgtext",
+            tags$img(src = "img/People.png", width = "80px", height = "80px", style="vertical-align: middle; height: 50%;max-weight: 100%; float:left;"),
+            div(class="gender", 
+                div(class="malefemale",
+                    h1(male),
+                    h1("were male")
+                )
+            )
+        ),
+        div(class="age",
+            tags$img(src = "img/Birthday_cake.png", width = "90px", height = "90px", style="float:left;"),
+            h1(id = "age1", round(filtered_data()$AGE)),
+            h1(id= "age2", HTML("was the", "<b>","median age","</b>","<br>","at the time of the survey"))
+        )
+        
       )
-    )       
+      
+
+    }else if (male == ""){
+      div(class="genderage",
+        div(class= "imgtext",
+            tags$img(src = "img/People.png", width = "80px", height = "80px", style="vertical-align: middle; height: 50%;max-weight: 100%; float:left;"),
+            div(class="gender",
+                div(class="malefemale",
+                    h1(female),
+                    h1("were female")
+                )
+            )
+        ),
+        div(class="age",
+            tags$img(src = "img/Birthday_cake.png", width = "90px", height = "90px", style="float:left;"),
+            h1(id = "age1", round(filtered_data()$AGE)),
+            h1(id= "age2",HTML("was the", "<b>","median age","</b>","at the time of the survey"))
+        )
+        
+      )
+      
+      
+    }else {
+      gender_age_function(male, female, filtered_data()$AGE)
+   
+    }
 
   })
   
@@ -399,8 +441,8 @@ shinyServer(function(input, output, session){
     
     req(round(filtered_data()$satisfaction_rate*100,digits=0))
     div(style="background: #E0EBF6;margin-bottom: 8px;display: flex;align-items:center;justify-content:center;border-radius: 5px;border: 2px solid #E0EBF6;height:9vh;",
-        span(paste0(round(filtered_data()$satisfaction_rate*100,digits=0),"%"), style="color: #2A64AB; font-size:2.2vw;margin: 2%;font-weight: bold;"),
-        span(HTML("were", "<strong>", "satisfied with their education","</strong>"),  style="font-size:1.5vw;color: #2A64AB;")
+        span(paste0(round(filtered_data()$satisfaction_rate*100,digits=0),"%"), style="color: #2A64AB; font-size:calc(15px + 1.5vw);margin: 2%;font-weight: bold;"),
+        span(HTML("were", "<strong>", "satisfied with their education","</strong>"),  style="font-size:calc(9px + 1vw);color: #2A64AB;")
         
     )
     
@@ -422,10 +464,10 @@ shinyServer(function(input, output, session){
     }else if (filtered_data()$EMPLOY_FULL_TIME==-4){
       "More than 90%"
     }else if (filtered_data()$EMPLOY_FULL_TIME==-8){
-      "Minority"
+      "The minority"
       
     }else if (filtered_data()$EMPLOY_FULL_TIME==-9){
-      "Majority"
+      "The majority"
       
     }else if (filtered_data()$EMPLOY_FULL_TIME==-99){
       "Too few responses to report"
@@ -437,10 +479,10 @@ shinyServer(function(input, output, session){
     # Changing font size based on the value, if there is a suppression the text size should be smaller
     
     if (nchar(employed_full_time)>= 4){
-      box_wrapper2(employed_full_time,"were employed full-time")
+      box_wrapper2(employed_full_time,HTML("of employed respondents","<br>", "were working full-time"))
       
     }else{
-      box_wrapper2(employed_full_time, "Employed full-time")
+      box_wrapper2(employed_full_time,HTML("of employed respondents","<br>", "were working full-time"))
     }
     
 
@@ -492,10 +534,10 @@ shinyServer(function(input, output, session){
   #   }else if (filtered_data()$UNEMPLOYED==-4){
   #     "More than 90%"
   #   }else if (filtered_data()$UNEMPLOYED==-12){
-  #     "Minority were unemployed"
+  #     "The minority were unemployed"
   #     
   #   }else if (filtered_data()$UNEMPLOYED==-13){
-  #     "Majority were unemployed"
+  #     "The majority were unemployed"
   #     
   #   }else if (filtered_data()$UNEMPLOYED==-99){
   #     "Too few responses to report"
@@ -526,7 +568,7 @@ shinyServer(function(input, output, session){
     
     req(filtered_data()$Read)
     req(filtered_data()$Write_Clearly)
-    req( filtered_data()$Speak_Clearly)
+    req(filtered_data()$Speak_Clearly)
     req( filtered_data()$Work_With_Others)
     req(filtered_data()$Think_Critically)
     req(filtered_data()$Resolve_Issues)
@@ -553,7 +595,7 @@ shinyServer(function(input, output, session){
         family = "Myriad-Pro",
         size = 16),
         orientation = 'h',
-        xaxis = list(title = "",tickformat = "%",zeroline=FALSE,fixedrange=TRUE),
+        xaxis = list(title = "",tickformat = "%",zeroline=FALSE,fixedrange=TRUE, range = c(0, 1.05)),
         yaxis = list(title = "",fixedrange=TRUE),
         margin = list(l = 220, pad=7)) %>% 
       add_annotations(xref = 'x', yref = 'y',
@@ -579,16 +621,16 @@ shinyServer(function(input, output, session){
     #})
   
 
-  #observeEvent(input$student_group,{
-    #if (input$student_group =="Bachelor's Degree"){
-      #addTooltip(session, "instruction", title_b, placement = "bottom", trigger = "hover", options = NULL)
-    #}else{
-      #addTooltip(session, "instruction", title_all, placement = "bottom", trigger = "hover", options = NULL)
-
-    #}
-  #}
-  #)
-
+  # observeEvent(input$student_group,{
+  #   if (input$student_group =="Bachelor's Degree"){
+  #     addTooltip(session, "wage", "something", placement = "bottom", trigger = "hover", options = NULL)
+  #   }else{
+  #     addTooltip(session, "wage", "something2", placement = "bottom", trigger = "hover", options = NULL)
+  # 
+  #   }
+  # }
+  # )
+  # 
 
   #}else{
   #addTooltip(session, "instruction", title_all, placement = "bottom", trigger = "hover", options = NULL)
@@ -597,8 +639,11 @@ shinyServer(function(input, output, session){
   #}
   #)
 
-  #ifelse(x() == "Bachelor's Degree", addTooltip(session,id= "instruction" , title = "Those who responded very good, good, or adequate." , placement ="left", trigger = "hover"),
-         #addTooltip(session,id= "instruction" , title = "Those who responded very good, good." , placement ="left", trigger = "hover"))
+  # test <- reactive({
+  #   ifelse(filtered_data()$institution == "Bachelor's Degree", addTooltip(session,id= "wage" , title = "Those who responded very good, good, or adequate." , placement ="left", trigger = "hover"),
+  #        addTooltip(session,id= "wage" , title = "Those who responded very good, good." , placement ="left", trigger = "hover"))
+  #   
+  # })
 
           
   
@@ -641,14 +686,31 @@ shinyServer(function(input, output, session){
     
     if (input$student_group=="Bachelor's Degree"){
       imageWrapper2(wage,"Median annual salary",img = "img/Dollar.png")
-    }else if (nchar(wage)>5){
+          }else if (nchar(wage)>5){
       imageWrapper_text(wage, "Median hourly wage",img = "img/Dollar.png")
     }else{
       
       imageWrapper2(wage,"Median hourly wage",img = "img/Dollar.png")
     }
+
   })
   
+  
+  # wage_message <- reactive({
+  #   if (input$student_group="Bachelor's Degree"){
+  #     "Median (middle value) of hourly wage for main job."
+  #   }else{
+  #     "Median (middle value) of annual salary for main job."
+  #   }
+  # 
+  # })
+  # 
+  # output$testing <- renderUI({
+  #   addTooltip(session, "wage", wage_message(),  placement = "bottom", trigger = "hover")
+  # })
+  
+
+
   # 3. Unemployment rate
   
   output$unemploy_rate<-renderUI({
@@ -660,10 +722,10 @@ shinyServer(function(input, output, session){
     }else if (filtered_data()$UNEMPLOYED==-4){
       "More than 90%"
     }else if (filtered_data()$UNEMPLOYED==-12){
-      HTML("Minority")
+      HTML("Minority are unemployed")
       
     }else if (filtered_data()$UNEMPLOYED==-13){
-      HTML("Majority")
+      HTML("Majority are unemployed")
       
     }else if (filtered_data()$UNEMPLOYED==-99){
       "Too few responses to report"
@@ -693,10 +755,10 @@ shinyServer(function(input, output, session){
     }else if (filtered_data()$EMPLOYED==-4){
       "More than 90%"
     }else if (filtered_data()$EMPLOYED==-10){
-      HTML("Minority")
+      HTML("The minority")
       
     }else if (filtered_data()$EMPLOYED==-11){
-      HTML("Majority")
+      HTML("The majority")
       
     }else if (filtered_data()$EMPLOYED==-99){
       "Too few responses to report"
@@ -706,8 +768,8 @@ shinyServer(function(input, output, session){
     
     
     div(style="background: #E0EBF6;margin-bottom: 8px;display: flex;align-items:center;justify-content:center;border-radius: 5px;border: 2px solid #E0EBF6;height:9vh;",
-        span(employed, style="color: #2A64AB; font-size:2.2vw;margin: 2%;font-weight: bold;"),
-        span(HTML("of all respondents were employed"),  style="font-size:1.5vw;color: #2A64AB;")
+        span(employed, style="color: #2A64AB; font-size:calc(15px + 1.5vw);;margin: 2%;font-weight: bold;"),
+        span(HTML("of all respondents were employed"),  style="font-size:calc(9px + 1vw);;color: #2A64AB;")
         
     )
   
@@ -726,10 +788,10 @@ shinyServer(function(input, output, session){
     }else if (filtered_data()$EMPLOY_FULL_TIME==-4){
       "More than 90%"
     }else if (filtered_data()$EMPLOY_FULL_TIME==-8){
-      HTML("Minority")
+      HTML("The minority")
       
     }else if (filtered_data()$EMPLOY_FULL_TIME==-9){
-      HTML("Majority")
+      HTML("The majority")
       
     }else if (filtered_data()$EMPLOY_FULL_TIME==-99){
       "Too few responses to report"
@@ -738,10 +800,10 @@ shinyServer(function(input, output, session){
     }
     
     if (nchar(employed_full_time) > 4){
-      box_wrapper(employed_full_time, "were employed full-time")
+      box_wrapper(employed_full_time,HTML("of employed respondents","<br>", "were working full-time"))
       
     }else{
-      box_wrapper(employed_full_time,"were employed full-time")
+      box_wrapper(employed_full_time, HTML("of employed respondents","<br>", "were working full-time"))
     }
     
   })
@@ -755,10 +817,10 @@ shinyServer(function(input, output, session){
       }else if (filtered_data()$SELF_EMPLOYED==-4){
         "More than 90%"
       }else if (filtered_data()$SELF_EMPLOYED==-6){
-        HTML("Minority")
+        HTML("The minority")
         
       }else if (filtered_data()$SELF_EMPLOYED==-7){
-        HTML("Majority")
+        HTML("The majority")
         
       }else if (filtered_data()$SELF_EMPLOYED==-99){
         "Too few responses to report"
@@ -800,11 +862,12 @@ shinyServer(function(input, output, session){
 
   # text for satisfaction section
   output$text3 <- renderUI({
-    HTML(paste("<em>", "Former students were asked how helpful their program was in their development of a number of skills. Percentages are those who responded that their program was very helpful or helpful in developing the skill.","</em>","</p>"))
+    div(HTML(paste("<em>", "Former students were asked how helpful their program was in their development of a number of skills.", "<br>", "Percentages are those who responded that their program was very helpful or helpful in developing the skill.","</em>","</p>")),
+        style="text-align: center;")
   })
   
   output$text_skill <- renderUI({
-    HTML(paste("<em>", "Select a skill from the dropdown menu on the right to view results by program area.","</em>","</p>"))
+    div(HTML(paste("<em>", "Select a skill from the dropdown menu on the right to view results by program area.","</em>","</p>")), style="text-align: center;")
   })
   
 
@@ -924,7 +987,7 @@ shinyServer(function(input, output, session){
           family = "Myriad-Pro",
           size = 16),
           orientation = 'h',
-          xaxis = list(title = "",tickformat = "%",zeroline=FALSE,fixedrange=TRUE),
+          xaxis = list(title = "",tickformat = "%",zeroline=FALSE,fixedrange=TRUE,  range = c(0, 1.05)),
           yaxis = list(title = "",fixedrange=TRUE),
           margin = list(l = 220, pad=7)) %>% 
         add_annotations(xref = 'x', yref = 'y',
@@ -961,7 +1024,7 @@ shinyServer(function(input, output, session){
                    
                    family = "Myriad-Pro",
                    size = 16),
-                 xaxis = list(title = "",tickformat = "%",zeroline=FALSE,fixedrange=TRUE),
+                 xaxis = list(title = "",tickformat = "%",zeroline=FALSE,fixedrange=TRUE,  range = c(0, 1.05)),
                  yaxis = list(title = "",fixedrange=TRUE),
                  margin = list(l = 220,pad=7)) %>% 
           add_annotations(xref = 'x', yref = 'y',
@@ -997,7 +1060,7 @@ shinyServer(function(input, output, session){
                  
                  family = "Myriad-Pro",
                  size = 16),
-               xaxis = list(title = "",tickformat = "%",zeroline=FALSE,fixedrange=TRUE),
+               xaxis = list(title = "",tickformat = "%",zeroline=FALSE,fixedrange=TRUE,  range = c(0, 1.05)),
                yaxis = list(title = "",fixedrange=TRUE),
                margin = list(l = 220,pad=7)) %>% 
         add_annotations(xref = 'x', yref = 'y',
@@ -1049,7 +1112,7 @@ shinyServer(function(input, output, session){
           family = "Myriad-Pro",
           size = 16),
           orientation = 'h',
-          xaxis = list(title = "",tickformat = "%",zeroline=FALSE,fixedrange=TRUE),
+          xaxis = list(title = "",tickformat = "%",zeroline=FALSE,fixedrange=TRUE,  range = c(0, 1.05)),
           yaxis = list(title = "",fixedrange=TRUE),
           margin = list(l = 220, pad=7)) %>% 
         add_annotations(xref = 'x', yref = 'y',
@@ -1119,31 +1182,52 @@ shinyServer(function(input, output, session){
     
   })
   
+  
+  summary_results_program_name <- reactive({
+    div(style="padding: 5px; margin-left:10px;color: #2A64AB;",
+        h5(HTML("<em>","<strong>","Results are based on:","</strong>","</em>")),
+        h5(HTML("<em>",paste0(input$student_group,","," ", input$institution,","," ", input$program, ifelse(filtered_data()$PROGRAM_NAME==" "," ",", Program Name:")," ",filtered_data()$PROGRAM_NAME),"</em>"))
+    )
+
+  })
+  
+  summary_results_program_area <- reactive({
+    div(style="padding: 5px; margin-left:10px;color: #2A64AB;",
+        h5(HTML("<em>","<strong>","Results are based on:","</strong>","</em>")),
+        h5(HTML("<em>",paste0(input$student_group,","," ", input$institution,","," ","Program Area:"," ",input$program),"</em>"))
+    )
+    
+  })
+  
   output$summary_filter <- renderUI ({
-    div(style="padding: 5px; margin-left:10px;color: #2A64AB;",
-      h5(HTML("<em>","<strong>","Results are based on:","</strong>","</em>")),
-      p(HTML("<em>",paste0(input$student_group,","," ", input$institution,","," ", input$program, ifelse(input$program_name==" "," ",",")," ", input$program_name),"</em>"))
-    )
-    
+    summary_results_program_name()
   })
   
-  output$summary_filter_employment <- renderUI ({
-    div(style="padding: 5px; margin-left:10px;color: #2A64AB;",
-        h5(HTML("<em>","<strong>","Results are based on:","</strong>","</em>")),
-        p(HTML("<em>",paste0(input$student_group,","," ", input$institution,","," ", input$program, ifelse(input$program_name==" "," ",",")," ", input$program_name),"</em>"))
-    )
-    
+  output$plot_program_satisfaction_summary <- renderUI ({
+    summary_results_program_area()
   })
   
-  output$summary_filter_skill <- renderUI ({
-    div(style="padding: 5px; margin-left:10px;color: #2A64AB;",
-        h5(HTML("<em>","<strong>","Results are based on:","</strong>","</em>")),
-        p(HTML("<em>",paste0(input$student_group,","," ", input$institution,","," ", input$program, ifelse(input$program_name==" "," ",",")," ", input$program_name),"</em>"))
-    )
-    
+  output$plot_skills_summary <- renderUI ({
+    summary_results_program_name()
   })
   
+  output$plot_program_switch_summary <- renderUI ({
+    summary_results_program_area()
+  })
   
+  output$employment_summary <- renderUI ({
+    summary_results_program_name()
+  })
+  
+  output$plot_program_relate_summary <- renderUI ({
+    summary_results_program_area()
+  })
+  
+  output$plot_program_skill_summary <- renderUI ({
+    summary_results_program_area()
+  })
+  
+
   observeEvent(input$btn, {
     enable("element")
   })
@@ -1153,11 +1237,7 @@ shinyServer(function(input, output, session){
     div("This interactive tool allows you to filter by student group, institution, program area, and program name.", style = "font-style: italic;padding: 10px 10px 10px 30px;")
   })
   
-
-
-  
-
-    
+   
   
 })
 

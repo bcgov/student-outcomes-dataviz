@@ -120,8 +120,10 @@ shinyUI(tagList(dashboardPage(title="BC Student Outcomes Data Viewer",
   fluidRow(
     column(4, uiOutput("program_name"))),
     #br(),
-    uiOutput("respondents")
+    uiOutput("respondents"),
+  fluidRow(div(img(src = "logo_new.png", width = "70%", height = "70%", style="padding: 10px 10px 10px 30px;")))
   ),
+
   dashboardBody(
     useShinyjs(),
     bsModal(id = 'startupModal', title = tags$img(src = "logo.png", width = "25%", height = "18%", style="display: block; margin: 0 auto;")
@@ -141,38 +143,10 @@ shinyUI(tagList(dashboardPage(title="BC Student Outcomes Data Viewer",
            ".shiny-output-error:before { visibility: hidden; }"),
     
     tags$link(rel="stylesheet", type="text/css",href="style.css"),
-    tags$style(".small-box.bg-red { height: 115px ; background-color: #ffffff !important; color: black !important;border-style: none !important;}"),
+    #tags$style(".small-box.bg-red { height: 115px ; background-color: #ffffff !important; color: black !important;border-style: none !important;}"),
     tags$style(".small-box.bg-purple { height: 115px;background-color: #8dc63f !important; }"),
     tags$style(".small-box.bg-green { height: 115px; }"),
     tags$style(".small-box.bg-aqua { height: 115px;background-color: #fff !important; }"),
-    tags$style(HTML(" 
-
-                    
-                    .box.box-solid.box-primary>.box-header {
-                    color:#fff;
-                    background:#2A64AB
-                    }
-                    
-                    .box.box-solid.box-success>.box-header {
-                    color: #2A64AB;
-                    background:#E0EBF6;
-                    font-weight: bold;
-                    
-                    }
-                    
-                    .box.box-solid.box-success{
-                    border-bottom-color:#1a3f72;
-                    border-left-color:#1a3f72;
-                    border-right-color:#1a3f72;
-                    border-top-color:#1a3f72;
-                    }
-                    
-                    .box.box-solid.box-primary{
-                    border-bottom-color:#1a3f72;
-                    border-left-color:#1a3f72;
-                    border-right-color:#1a3f72;
-                    border-top-color:#1a3f72;
-                    }")),
     tags$script(HTML("$('body').addClass('fixed');")),
     tags$head(tags$meta(name = "viewport", content = "width=1500")), # mobile friendly version of the app 
     tags$head(tags$style(
@@ -189,19 +163,19 @@ shinyUI(tagList(dashboardPage(title="BC Student Outcomes Data Viewer",
       fluidRow(h3("About the respondents", style="margin:10px;color: #2A64AB;")),           
         
         fluidRow(
-          column(width=6, uiOutput("gender")),
-          column(width=6, uiOutput("age"))
+          #column(width=6, uiOutput("gender")),
+          column(width=12, div(class="testing", uiOutput("gender_age")))
                  ), 
-        fluidRow(column(width=12, uiOutput="satisfaction2")),
+        fluidRow(column(width=12, uiOutput="satisfaction2", bsTooltip(id = "satisfaction2", title = "Those who said they were very satisfied or satisfied with their education.", placement = "top", trigger = "hover"))),
         fluidRow(column(width=12,uiOutput("satisfaction2"))
         ),
         fluidRow(
           column(width=6, uiOutput("quality_education")),
-          column(width=6, uiOutput("employed_full_time"))
+          column(width=6, uiOutput("employed_full_time"), bsTooltip(id = "employed_full_time", title = "Employed 30 hours or more per week at their main job.", placement = "top", trigger = "hover"))
         ),
         fluidRow(
           column(width=6, uiOutput("further_studies")),
-          column(width=6, uiOutput("related_program"))
+          column(width=6, uiOutput("related_program"), bsTooltip(id = "related_program", title = "Those who responded very related or somewhat related when asked how related their main job was to their program.", placement = "top", trigger = "hover"))
         ),
         fluidRow(uiOutput("summary_filter")),
 
@@ -211,13 +185,15 @@ shinyUI(tagList(dashboardPage(title="BC Student Outcomes Data Viewer",
        box(id="dem", title=viewMoreTitle(sectionID = "dem_link", title = uiOutput("satisfaction_edu")),width=12,solidHeader = TRUE,status="success",collapsible = TRUE,collapsed=FALSE,
            fluidRow(column(8,offset=1, withSpinner(plotlyOutput("plot_program_satisfaction", height = "65vh",width = "100%")))
                      #column(3,selectInput("select_further", uiOutput("satisfaction_text"),choices= choices_result, selected=""))
-                    )
+                    ),
+           fluidRow(uiOutput("plot_program_satisfaction_summary"))
           ))),
        
 
     box(id="sat",uiOutput ("text3"), title=viewMoreTitle(sectionID = "satisfactionlink", title = div(tags$b("Skill Development"), style="font-size: 25px;")), status = "primary", solidHeader = TRUE, collapsible = TRUE, width = 12,collapsed=FALSE,
 
-        fluidRow(column(6,offset=2, plotlyOutput("plot_skills", height = "65vh",width = "100%"))),
+        fluidRow(column(7,offset=2,  withSpinner(plotlyOutput("plot_skills", height = "65vh",width = "100%")))),
+        fluidRow(uiOutput("plot_skills_summary")),
         fluidRow(box(uiOutput ("text_skill"),
           width=12,
                           title = uiOutput("title_select"),
@@ -227,12 +203,10 @@ shinyUI(tagList(dashboardPage(title="BC Student Outcomes Data Viewer",
                      fluidRow(column(8,offset=1, plotlyOutput("plot_program_switch", height = "65vh")),
                               column(3,selectInput("select", "See more results by program area…",choices= choices_skill, selected="Reading & Comprehending"))),
                      fluidRow(
-                       column(8,
-                              div(tags$b(tags$em(helpText("Note: Those who responded that their program was very helpful or helpful in developing this skill."))))))
-                     
-                        #div(style="display:center-align"))
-        )),
-        fluidRow(uiOutput("summary_filter_skill"))
+                       column(12,
+                              div(tags$em(helpText("Note: Those who responded that their program was very helpful or helpful in developing this skill.")),style="text-align:center;"))),
+          fluidRow(uiOutput("plot_program_switch_summary"))
+        ))
         
         
         
@@ -242,50 +216,48 @@ shinyUI(tagList(dashboardPage(title="BC Student Outcomes Data Viewer",
     fluidRow(box(
       id="emp",title=viewMoreTitle(sectionID = "employmentlink", title = div(tags$b("Employment"),style="font-size: 25px;")), status = "primary", solidHeader = TRUE, collapsible = TRUE, width = 12,collapsed=FALSE,
       fluidRow(
-        column(4,uiOutput("labour"),bsTooltip(id = "labour", title = "Respondents who were employed or were looking and available for work.", placement = "right", trigger = "hover")),
-        column(4,uiOutput("wage")),
-        column(4, uiOutput("unemploy_rate"),bsTooltip(id = "unemploy_rate", title = "Respondents who were not working but were available and looking for a job.", placement = "right", trigger = "hover"))
+        column(4,uiOutput("labour"),bsTooltip(id = "labour", title = "The labour force includes people who were employed or were looking and available for work.", placement = "top", trigger = "hover")),
+        column(4,uiOutput("wage"), uiOutput("testing")),
+        column(4, uiOutput("unemploy_rate"),bsTooltip(id = "unemploy_rate", title = "Respondents who were not working but were available and looking for a job.", placement = "top", trigger = "hover"))
       ),
       fluidRow(
-        column(12, uiOutput('employment_rate'))),
+        column(12, uiOutput('employment_rate'), bsTooltip(id = "employment_rate", title = "Those who said they were working at a job or business at the time of the survey. Asked of all respondents.", placement = "top", trigger = "hover"))),
       fluidRow(
-        column(6, uiOutput('full_time')),
+        column(6, uiOutput('full_time'), bsTooltip(id = "full_time", title = "Employed 30 hours or more per week at their main job.", placement = "top", trigger = "hover")),
         column(6, uiOutput('self'))
       ),
       fluidRow(
         column(6, uiOutput('related_program_emp')),
         column(6, uiOutput('knowledge_skill_useful'))
       ),
+      fluidRow(uiOutput("employment_summary")),
    
-        fluidRow(
           box(width=12, 
             #div(tags$em("Working in a program-related job by program area",style="font-size: 16px;margin-left: 210px")),
             title = uiOutput("title4"),
             status = "success",
             solidHeader = TRUE,
             collapsible = TRUE,
-            column(width=8, offset=1, 
-                   fluidRow(withSpinner(plotlyOutput("plot_program_relate", height = "65vh"))),
-                   fluidRow(div(tags$b(tags$em(helpText("Note: Main job very or somewhat related to program. Based on employed respondents.")))))
+            fluidRow(column(width=8, offset=1,withSpinner(plotlyOutput("plot_program_relate", height = "65vh")))),
+            fluidRow(column(12,div(tags$em(helpText("Note: Main job very or somewhat related to program. Based on employed respondents.")), style="text-align:center;"))),
+            fluidRow(uiOutput("plot_program_relate_summary"))
             
-          ))),
-        fluidRow(
+          ),
             box(width=12, 
             title = uiOutput("title5"),
             status = "success",
             solidHeader = TRUE,
             collapsible = TRUE,
-            column(width=8,offset=1, 
-                   fluidRow(withSpinner(plotlyOutput("plot_program_skill", height = "65vh"))),
-                   fluidRow(div(tags$b(tags$em(helpText("Note: Knowledge and skills gained in program very or somewhat useful in performing job. Based on employed respondents.")))))
-          ))),
-      fluidRow(uiOutput("summary_filter_employment")),
+            fluidRow(column(width=8,offset=1,withSpinner(plotlyOutput("plot_program_skill", height = "65vh")))),
+            fluidRow(column(12, div(tags$em(helpText("Note: Knowledge and skills gained in program very or somewhat useful in performing job. Based on employed respondents.")), style="text-align:center;"))),
+            fluidRow(uiOutput("plot_program_skill_summary"))
+          ),
           
           fluidRow(viewMoreButton(sectionID = "summary",style="background-color: #8dc63f;color: white;border-color: #ddd;border-radius: 0;"),style="padding: 0 5px;text-align: center;"))
     )
   )
 ),
-tags$div(class="footer-wrapper",style = "background-color:#003366; border-top:2px solid #fcba19;",
+tags$div(class="footer-wrapper",style = "background-color:#003366;",
          tags$footer(class="footer",
                      
                      tags$div(class="container", style="background-color: #003366; display:flex; justify-content:center; text-align:center; height:46px;width:100%;",

@@ -84,3 +84,11 @@ choices_result <- c("Took further studies"="FURTH_STUDIES",
 # sort(students$PROGRAM_NAME[students$CREDENTIAL=="Apprenticeship" &
 #                                students$INSTITUTION_NAME=="Camosun College" & 
 #                                students$PROGRAM_AREA_NAME=="Carpentry"])
+
+
+
+students$INSTITUTION_NAME[students$INSTITUTION_NAME==as.character(unique(students$INSTITUTION_NAME))[1]]
+
+as.character(unique(students$INSTITUTION_NAME[students$INSTITUTION_NAME==as.character(unique(students$INSTITUTION_NAME))[1]]))
+
+choices= as.character(unique(students$INSTITUTION_NAME[students$INSTITUTION_NAME==as.character(unique(students$INSTITUTION_NAME))[1]]))
