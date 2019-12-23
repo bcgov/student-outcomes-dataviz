@@ -1,3 +1,6 @@
 *.html
-data/
+.Rproj.user
+.RData
+student-outcomes-dataviz/data/SO_Data_Viewer_Data_2016_2018.csv
+student-outcomes-dataviz/data/SO_Data_Viewer_Data_2016_2018_V2.csv
 
