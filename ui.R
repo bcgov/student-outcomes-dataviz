@@ -16,15 +16,6 @@ viewMoreTitle <- function(sectionID, title) {
   HTML(paste0("<span id=\"", sectionID, "\">", title, "</span>"))
 }
 
-sideBarValueBoxOutput <- function(outputId, width = 4) {
-  tags$a(
-    class = "sidebar-menu",
-    tags$li(
-      shinydashboard::valueBoxOutput(outputId, width = width)
-    )
-  )
-}
-
 jsCode <- "shinyjs.winprint = function() {
 window.print();
 }"

@@ -158,40 +158,6 @@ imageWrapper_text <- function(value, title = "", img, width = "100%", height = "
   )
 }
 
-# Creating valuebox for images
-customImageValueBox <- function(value, subtitle, img, imageHeight = 4, color = "aqua", width = NULL, href = NULL) {
-  shinydashboard::valueBox(div(value, style = "margin:10px;
-                               font-weight: bold;font-size:2.5vw;"), subtitle,
-    icon = tags$i(
-      style = "position: relative; top: 0.03vw; bottom: 0.03vw;",
-      tags$img(src = img, style = paste0(
-        "height:",
-        imageHeight, "vw; max-width: 100%;
-                                                                           max-height:110px; top: -10px;vertical-align: text-top;"
-      ))
-    ),
-    color = color, width = NULL, href = href
-  )
-}
-
-# Creating valuebox for images
-customImageValueBox_text <- function(value, subtitle, img, imageHeight = 4, color = "aqua", width = NULL, href = NULL) {
-  shinydashboard::valueBox(div(value, style = "margin: 10px;
-                               font-weight: bold; font-size: 1.2vw;"), subtitle,
-    icon = tags$i(
-      style = "position: relative;top: 0.03vw; bottom: 0.03vw;",
-      tags$img(
-        src = img,
-        style = paste0(
-          "height:",
-          imageHeight,
-          "vw; max-width: 100%;max-height:110px; top: -10px;vertical-align: text-top;"
-        )
-      )
-    ),
-    color = color, width = NULL, href = href
-  )
-}
 
 # Server ------------------------------------------------------------------
 
