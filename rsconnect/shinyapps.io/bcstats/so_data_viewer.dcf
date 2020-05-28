@@ -5,6 +5,6 @@ account: bcstats
 server: shinyapps.io
 hostUrl: https://api.shinyapps.io/v1
 appId: 2372010
-bundleId: 3201308
+bundleId: 3202371
 url: https://bcstats.shinyapps.io/so_data_viewer/
-when: 1590685833.82441
+when: 1590703019.60649

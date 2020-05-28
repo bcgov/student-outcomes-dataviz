@@ -10,8 +10,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and limitations under the License.
 
-
-# Define functions for the UI
+# Define UI functions
 viewMoreTitle <- function(sectionID, title) {
   HTML(paste0("<span id=\"", sectionID, "\">", title, "</span>"))
 }
@@ -115,7 +114,7 @@ shinyUI(tagList(
         type = "text/css",
         "#image img {max-width: 100%; width: 50%; height: auto}"
       )),
-      # Summary Section ---------------
+      ### Summary Section ---------------
       tabsetPanel(
         tabPanel(
           "Home",
@@ -131,7 +130,12 @@ shinyUI(tagList(
                   br(),
                   p("Find out what former students are doing one to two years after their B.C. post-secondary education.", style = "font-size:24px;"),
                   br(),
-                  p("Note that outcomes of former students may differ from outcomes of current and future students.", style = "font-size:17px; font-style: italic;")
+                  p("Note that outcomes of former students may differ from outcomes of current and future students.", style = "font-size:17px; font-style: italic;"),
+                  br(),
+                  p("To return to the BC Student Outcomes website,
+                    please click the link below.",
+                    tags$a(href = "http://outcomes.bcstats.gov.bc.ca/ContactUs/ContactStudentOutcomes.aspx", "www.outcomes.bcstats.gov.bc.ca"),
+                    style = "font-size:13px; font-style: italic;"),
                 )
               )
             )
@@ -192,7 +196,7 @@ shinyUI(tagList(
               )
             ),
             fluidRow(uiOutput("summary_filter")),
-            #### Satisfaction and further education section--------------
+            ### Satisfaction and further education section--------------
             fluidRow(
               box(
                 id = "dem",
