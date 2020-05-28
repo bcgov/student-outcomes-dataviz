@@ -10,7 +10,6 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and limitations under the License.
 
-
 # Functions ---------------------------------------------------------------
 gender_age_function <- function(male, female, age, satisfaction) {
   div(
@@ -60,7 +59,7 @@ gender_age_function <- function(male, female, age, satisfaction) {
     div(
       div("Satisfaction rate",
         style = "color:#2A64AB; font-size: calc(9px + 1vw);
-            font-weight: bold;padding: 7px 10px; text-align: center"
+            font-weight: bold; padding: 7px 10px; text-align: center"
       ),
       div(
         class = "age",
@@ -160,9 +159,8 @@ imageWrapper_text <- function(value, title = "", img, width = "100%", height = "
 
 
 # Server ------------------------------------------------------------------
-
 shinyServer(function(input, output, session) {
-  # some data manipulation to drive the KPIs
+
   toggleModal(session, "startupModal", toggle = "open")
 
   # suppress warnings
@@ -318,7 +316,7 @@ shinyServer(function(input, output, session) {
       div(
         class = "genderage",
         div(
-          div("Gender", style = "color:#2A64AB;font-size: calc(9px + 1vw);
+          div("Gender", style = "color:#2A64AB; font-size: calc(9px + 1vw);
                 font-weight: bold;padding: 7px 10px; text-align: center"),
           div(
             class = "imgtext",
@@ -337,7 +335,7 @@ shinyServer(function(input, output, session) {
           )
         ),
         div(
-          div("Median age", style = "color:#2A64AB;font-size: calc(9px + 1vw);
+          div("Median age", style = "color:#2A64AB; font-size: calc(9px + 1vw);
                 font-weight: bold;padding: 7px 10px; text-align: center"),
           div(
             class = "age",
@@ -350,7 +348,7 @@ shinyServer(function(input, output, session) {
         ),
         div(
           div("Satisfaction rate", style = "color: #2A64AB; font-size: calc(9px + 1vw);
-                font-weight: bold;padding: 7px 10px; text-align: center"),
+                font-weight: bold; padding: 7px 10px; text-align: center"),
           div(
             class = "age",
             tags$img(src = "img/satisfaction.png", width = "auto", height = "60%", style = "float:left;"),
@@ -363,7 +361,7 @@ shinyServer(function(input, output, session) {
         class = "genderage",
         div(
           div("Gender", style = "color:#2A64AB; font-size: calc(9px + 1vw);
-                font-weight: bold;padding: 7px 10px; text-align: center"),
+                font-weight: bold; padding: 7px 10px; text-align: center"),
           div(
             class = "imgtext",
             tags$img(
@@ -601,7 +599,7 @@ shinyServer(function(input, output, session) {
       div(
         style = "background: #E0EBF6; margin-bottom: 8px; display: flex;
           align-items:center; justify-content:center;
-          border-radius: 5px; border: 2px solid #E0EBF6;height:9vh;",
+          border-radius: 5px; border: 2px solid #E0EBF6; height:9vh;",
         span(employed,
           style = "color: #2A64AB; font-size:calc(14px + 1.5vw);
              margin: 1%; font-weight: bold;"
@@ -680,7 +678,7 @@ shinyServer(function(input, output, session) {
       HTML("were", "<b>", "in a job related to their program", "<b/>")
     )
   })
-  # knowledge and skills gained were useful in programmin
+  # knowledge and skills gained were useful
   output$knowledge_skill_useful <- renderUI({
     req(filtered_data()$USEFUL_PERFORM_JOB)
     box_wrapper(
@@ -1018,7 +1016,7 @@ shinyServer(function(input, output, session) {
 
   output$draft <- renderUI({
     div(class = "watermark", "Draft", style = "opacity: 0.2;
-    position: fixed;top: 60%;left:40%;font-size: 7vw;color:red;
+    position: fixed; top: 60%; left:40%; font-size: 7vw;color:red;
         transform: rotate(-45deg);z-index: 9999;")
   })
 
@@ -1038,7 +1036,7 @@ shinyServer(function(input, output, session) {
 
   summary_results_program_area <- reactive({
     div(
-      style = "padding: 5px; margin-left:10px;color: #2A64AB;",
+      style = "padding: 5px; margin-left:10px; color: #2A64AB;",
       h5(HTML(
         "<em>", "<strong>", "Results are based on:", "</strong>",
         "</em>"
@@ -1089,7 +1087,7 @@ shinyServer(function(input, output, session) {
   output$note <- renderUI({
     div("This interactive tool allows you to filter by student group,
         institution, program area, and program name.",
-      style = "font-style: italic;padding: 10px 10px 10px 30px;"
+      style = "font-style: italic; padding: 10px 10px 10px 30px;"
     )
   })
 })
