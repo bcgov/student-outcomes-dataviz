@@ -223,6 +223,18 @@ shinyServer(function(input, output, session) {
       return(NULL)
     }
   })
+  
+  # 5: screenshot button
+  output$screenshot_pdf <- renderUI({
+    capture_pdf(selector="#body", filename = paste0("BC SO Data Viewer - ", input$tabs),
+                icon("download"), "Save as PDF",
+                style = "color: #000;
+                 display: inline-block;
+                 background-color:#fff;
+                 border: 1px dash transparent;
+                 border-color:#00245d;")
+  })
+
 
   # Ensure that filters are updated properly
   observeEvent(input$student_group, {
@@ -278,6 +290,8 @@ shinyServer(function(input, output, session) {
       div("Response Rate", style = "text-align: left; vertical-align:middle;color: white;font-size: 0.9vw; font-weight: normal;")
     )
   })
+  
+  ## Main body -----
 
   # Gender age under summary section
   output$gender_age <- renderUI({
@@ -1090,4 +1104,19 @@ shinyServer(function(input, output, session) {
       style = "font-style: italic; padding: 10px 10px 10px 30px;"
     )
   })
+  
+  ## Footer ----
+  
+  output$footer_1 <- output$footer_2 <- output$footer_3 <- renderUI({
+    fluidRow(
+      column(width = 4,
+           div("Respondents: ", format(filtered_data()$RESPONDENTS, big.mark = ",")), 
+           div("Response Rate: ", paste0(round2(filtered_data()$RESPONSE_RATE * 100, 0), "%"))),
+      column(width = 8, 
+           div("BC Student Outcomes Data from 2017 to 2019", style = "text-align: right"),
+           div(a(href = "http://www.outcomes.bcstats.gov.bc.ca", "http://www.outcomes.bcstats.gov.bc.ca", target="_blank"), style = "text-align: right")))
+  })
+  
 })
+
+
