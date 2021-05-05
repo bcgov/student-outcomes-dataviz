@@ -42,7 +42,7 @@ shinyUI(tagList(
           ),
           onclick = "gtag"
         ),
-        h4("BC Student Outcomes Data Viewer (Data from 2017 to 2019)",
+        h4("BC Student Outcomes Data Viewer (Data from 2018 to 2020)",
           style = "font-weight:400; color:white; margin: 5px 5px 0 18px;"
         )
       ),
