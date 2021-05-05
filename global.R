@@ -29,7 +29,7 @@ options(scipen = 999)
 
 
 # reading data
-students <- read.csv("data/SO_Data_Viewer_Data_2017_2019_V8.csv", header = T)
+students <- read.csv("data/SO_Data_Viewer_Data_2018_2020_V1.csv", header = T)
 
 top <- students %>%
   mutate(tempcol1 = ifelse(is.na(FURTH_STUDIES), Q11_7, FURTH_STUDIES)) %>%
