@@ -42,7 +42,7 @@ shinyUI(tagList(
           ),
           onclick = "gtag"
         ),
-        h4("BC Student Outcomes Data Viewer (Data from 2017 to 2019)",
+        h4("BC Student Outcomes Data Viewer (Data from 2018 to 2020)",
           style = "font-weight:400; color:white; margin: 5px 5px 0 18px;"
         )
       ),
@@ -68,7 +68,14 @@ shinyUI(tagList(
       width:150px;
       height: 50px;
       padding-top:10px;
-      }"
+      }
+        
+      #sidebarItemExpanded {
+            overflow-x: hidden; /* Hide horizontal scrollbar */
+            overflow-y: auto; /* Add vertical scrollbar */
+            max-height: 90vh;
+          
+      }"  
       ),
       tags$style(HTML("
                     .sidebar {
@@ -78,7 +85,8 @@ shinyUI(tagList(
                     }")),
 
       br(),
-      width = 310,
+      #width = 310,
+      width = 330,
       fluidRow(uiOutput("note")),
       fluidRow(column(4, uiOutput("student_group"))),
       fluidRow(column(4, uiOutput("institution"))),
@@ -86,18 +94,19 @@ shinyUI(tagList(
       fluidRow(column(4, uiOutput("program_name"))),
       uiOutput("respondents"),
       uiOutput("response_rate"),
-      div(style = "display:inline-block;width:0%;padding-left: 10px;", downloadButton("downloadData", "Notes",
+      div(style = "display:inline-block;width:0%;padding-left: 15px;", downloadButton("downloadData", "Notes",
         icon = icon("download"),
-        style = " 
-                                                               color: #000;
-                                                               display: inline-block;
-                                                               background-color:#fff;
-                                                               border: 1px dash transparent;
-                                                               border-color:#00245d;"
-      ))
-    ),
+        style = "color: #000;
+                 display: inline-block;
+                 background-color:#fff;
+                 border: 1px dash transparent;
+                 border-color:#00245d;")),
+      br(),
+      br(),
+      div(style = "display:inline-block;width:0%;padding-left: 15px;", uiOutput("screenshot_pdf"))
+      ),
 
-    dashboardBody(
+    dashboardBody(id="body",
       useShinyjs(),
       tags$style(
         type = "text/css",
@@ -115,7 +124,7 @@ shinyUI(tagList(
         "#image img {max-width: 100%; width: 50%; height: auto}"
       )),
       ### Summary Section ---------------
-      tabsetPanel(
+      tabsetPanel(id = "tabs",
         tabPanel(
           "Home",
           div(
@@ -219,7 +228,8 @@ shinyUI(tagList(
                 )),
                 fluidRow(uiOutput("plot_satisfaction_summary"))
               )
-            )
+            ),
+            uiOutput("footer_1")
           ))
         ),
         tabPanel("Skill Development", width = "100%", fluidRow(
@@ -263,7 +273,8 @@ shinyUI(tagList(
                 ))
               ),
               fluidRow(uiOutput("plot_program_switch_summary"))
-            ))
+            )),
+            uiOutput("footer_2")
           )
         )),
         ### Employment Section --------------------------
@@ -363,7 +374,8 @@ shinyUI(tagList(
                 ))
               )),
               fluidRow(uiOutput("plot_program_skill_summary"))
-            )
+            ),
+            uiOutput("footer_3")
           ))
         )
       )

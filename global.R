@@ -23,12 +23,13 @@ library(shinycssloaders)
 library(markdown)
 library(shinyBS)
 library(shinyalert)
+library(capture)
 library(dplyr)
 options(scipen = 999)
 
 
 # reading data
-students <- read.csv("data/SO_Data_Viewer_Data_2017_2019_V6.csv", header = T)
+students <- read.csv("data/SO_Data_Viewer_Data_2018_2020_V1.csv", header = T)
 
 top <- students %>%
   mutate(tempcol1 = ifelse(is.na(FURTH_STUDIES), Q11_7, FURTH_STUDIES)) %>%
