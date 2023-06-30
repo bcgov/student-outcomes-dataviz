@@ -168,11 +168,12 @@ shinyServer(function(input, output, session) {
   options(warn = -1)
   # 1: student group filter
   output$student_group <- renderUI({
+    choices <- students %>% arrange(CREDENTIAL) %>% pull(CREDENTIAL) %>% unique() %>% as.character()
     div(
       style = "display: inline-block;",
       selectizeInput("student_group", "1. Student Group",
-        choices = as.character(unique(students$CREDENTIAL)),
-        selected = "Apprenticeship",
+        choices = choices,
+        selected = "Certificate",
         width = 315
       )
     )
@@ -523,7 +524,7 @@ shinyServer(function(input, output, session) {
           size = 16
         ),
         orientation = "h",
-        xaxis = list(title = "", tickformat = "%", zeroline = FALSE, fixedrange = TRUE, range = c(0, 1.1)),
+        xaxis = list(title = "", tickformat = ".0%", zeroline = FALSE, fixedrange = TRUE, range = c(0, 1.1)),
         yaxis = list(title = "", fixedrange = TRUE),
         margin = list(l = 220, pad = 7)
       ) %>%
@@ -852,7 +853,7 @@ shinyServer(function(input, output, session) {
           size = 16
         ),
         xaxis = list(
-          title = "", tickformat = "%", zeroline = FALSE,
+          title = "", tickformat = ".0%", zeroline = FALSE,
           fixedrange = TRUE, range = c(0, 1.1)
         ),
         yaxis = list(title = "", fixedrange = TRUE),
@@ -892,7 +893,7 @@ shinyServer(function(input, output, session) {
           size = 16
         ),
         xaxis = list(
-          title = "", tickformat = "%", zeroline = FALSE,
+          title = "", tickformat = ".0%", zeroline = FALSE,
           fixedrange = TRUE, range = c(0, 1.1)
         ),
         yaxis = list(title = "", fixedrange = TRUE),
@@ -931,7 +932,7 @@ shinyServer(function(input, output, session) {
           size = 16
         ),
         xaxis = list(
-          title = "", tickformat = "%", zeroline = FALSE,
+          title = "", tickformat = ".0%", zeroline = FALSE,
           fixedrange = TRUE, range = c(0, 1.1)
         ),
         yaxis = list(title = "", fixedrange = TRUE),
@@ -980,7 +981,7 @@ shinyServer(function(input, output, session) {
         ),
         orientation = "h",
         xaxis = list(
-          title = "", tickformat = "%", zeroline = FALSE,
+          title = "", tickformat = ".0%", zeroline = FALSE,
           fixedrange = TRUE, range = c(0, 1.1)
         ),
         yaxis = list(title = "", fixedrange = TRUE),
@@ -1113,7 +1114,7 @@ shinyServer(function(input, output, session) {
            div("Respondents: ", format(filtered_data()$RESPONDENTS, big.mark = ",")), 
            div("Response Rate: ", paste0(round2(filtered_data()$RESPONSE_RATE * 100, 0), "%"))),
       column(width = 8, 
-           div("BC Student Outcomes Data from 2019 to 2021", style = "text-align: right"),
+           div("BC Student Outcomes Data from 2020 to 2022", style = "text-align: right"),
            div(a(href = "http://www.outcomes.bcstats.gov.bc.ca", "http://www.outcomes.bcstats.gov.bc.ca", target="_blank"), style = "text-align: right")))
   })
   

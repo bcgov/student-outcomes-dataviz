@@ -29,7 +29,7 @@ options(scipen = 999)
 
 
 # reading data
-students <- read.csv("data/SO_Data_Viewer_Data_2019_2021_V1.csv", header = T)
+students <- read.csv("data/SO_Data_Viewer_Data_2020_2022_V1.csv", header = T)
 
 top <- students %>%
   mutate(tempcol1 = ifelse(is.na(FURTH_STUDIES), Q11_7, FURTH_STUDIES)) %>%
@@ -40,6 +40,8 @@ students <- top %>%
   arrange(INSTITUTION_NAME) %>%
   mutate(PROGRAM_AREA_NAME2 = PROGRAM_AREA_NAME) %>%
   mutate_if(is.character, as.factor)
+
+students$CREDENTIAL <- factor(students$CREDENTIAL, levels = c("Certificate", "Diploma", "Associate Degree", "Bachelor's Degree", "Trades Foundation", "Apprenticeship"))
 
 
 # Change variable Names
