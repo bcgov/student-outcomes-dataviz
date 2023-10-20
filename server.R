@@ -1023,9 +1023,9 @@ shinyServer(function(input, output, session) {
 
   data <- reactiveVal()
   output$downloadData <- downloadHandler(
-    filename = "Notes for the Student Outcomes Data Viewer.pdf",
+    filename = "Notes for the Student Outcomes Data Viewer - 2023-10-19.pdf",
     content = function(file) {
-      file.copy("www/Notes for the Student Outcomes Data Viewer.pdf", file)
+      file.copy("www/Notes for the Student Outcomes Data Viewer - 2023-10-19.pdf", file)
     }
   )
 
