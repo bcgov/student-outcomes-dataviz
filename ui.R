@@ -143,7 +143,7 @@ shinyUI(tagList(
                   br(),
                   p("To return to the BC Student Outcomes website,
                     please click the link below.",
-                    tags$a(href = "http://outcomes.bcstats.gov.bc.ca/ContactUs/ContactStudentOutcomes.aspx", "www.outcomes.bcstats.gov.bc.ca"),
+                    tags$a(href = "https://outcomes.bcstats.gov.bc.ca", "www.outcomes.bcstats.gov.bc.ca"),
                     style = "font-size:13px; font-style: italic;"),
                 )
               )
@@ -411,7 +411,7 @@ shinyUI(tagList(
             style = "font-size:1em; font-weight:normal; color:white; padding-left:10px; padding-right:10px; border-right:1px solid #4b5e7e;"
           )),
           tags$li(a(
-            href = "http://outcomes.bcstats.gov.bc.ca/ContactUs/ContactStudentOutcomes.aspx", "Contact",
+            href = "https://outcomes.bcstats.gov.bc.ca/contact-us", "Contact",
             style = "font-size:1em; font-weight:normal; color:white; padding-left:10px; padding-right:10px; border-right:1px solid #4b5e7e;"
           ))
         )
