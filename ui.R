@@ -119,10 +119,13 @@ shinyUI(tagList(
       tags$style(".small-box.bg-aqua { height: 115px;background-color: #fff !important;}"),
       tags$script(HTML("$('body').addClass('fixed');")),
       tags$head(tags$meta(name = "viewport", content = "width=1500")), # mobile friendly version of the app
+      tags$head(tags$meta(name = "description", content = "See what former students said about their B.C. post-secondary experience and find out what they’re doing now.")),
+      tags$head(tags$meta(name = "robots", content = "indexifembedded")),
       tags$head(tags$style(
         type = "text/css",
         "#image img {max-width: 100%; width: 50%; height: auto}"
       )),
+      tags$head(tags$link(rel = "shortcut icon", href = "favicon.png")),
       ### Summary Section ---------------
       tabsetPanel(id = "tabs",
         tabPanel(
