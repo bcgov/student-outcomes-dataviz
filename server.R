@@ -1114,7 +1114,7 @@ shinyServer(function(input, output, session) {
            div("Respondents: ", format(filtered_data()$RESPONDENTS, big.mark = ",")), 
            div("Response Rate: ", paste0(round2(filtered_data()$RESPONSE_RATE * 100, 0), "%"))),
       column(width = 8, 
-           div("BC Student Outcomes Data from 2020 to 2022", style = "text-align: right"),
+           div("BC Student Outcomes Data from 2021 to 2023", style = "text-align: right"),
            div(a(href = "http://www.outcomes.bcstats.gov.bc.ca", "http://www.outcomes.bcstats.gov.bc.ca", target="_blank"), style = "text-align: right")))
   })
   
