@@ -130,29 +130,43 @@ shinyUI(tagList(
       tabsetPanel(id = "tabs",
         tabPanel(
           "Home",
-          div(
-            class = "home-image",
-            tags$section(
-              class = "container",
-              div(
-                class = "home-text",
-                tags$article(
-                  br(),
-                  p("Each year, tens of thousands of former post-secondary students are asked about their educational experiences, subsequent employment, and further studies.", style = "font-size:24px;"),
-                  br(),
-                  p("Find out what former students are doing one to two years after their B.C. post-secondary education.", style = "font-size:24px;"),
-                  br(),
-                  p("Note that outcomes of former students may differ from outcomes of current and future students.", style = "font-size:17px; font-style: italic;"),
-                  br(),
-                  p("To return to the BC Student Outcomes website,
-                    please click the link below.",
-                    tags$a(href = "https://outcomes.bcstats.gov.bc.ca", "www.outcomes.bcstats.gov.bc.ca"),
-                    style = "font-size:13px; font-style: italic;"),
+          style = "background-color:#e9f3ff;min-height: 100vh;padding-top:40px",
+          div(class = "home-image",
+              fluidRow(
+                column(width = 6,
+                       class = "home-text",
+                         p("Each year, tens of thousands of former post-secondary students are asked about their educational experiences, subsequent employment, and further studies.",
+                           style = "font-size:24px;")
+                ),
+                column(width = 6,
+                       class = "home-text",
+                         img(
+                           src = "img/so-logo.png",
+                           alt = "BC Student Outcomes",
+                           width = '70%',
+                           style = "padding-top:5px")
+                )),
+              fluidRow(
+                column(width = 6,
+                       class = "home-text",
+                         p("Find out what former students are doing one to two years after their B.C. post-secondary education.", 
+                           style = "font-size:24px;"),
+                         br(),
+                         p("Note that outcomes of former students may differ from outcomes of current and future students.", 
+                           style = "font-size:17px; font-style: italic;")
+                ),
+                column(width = 6,
+                       class = "home-text",
+                         p("To return to the BC Student Outcomes website,",
+                           style = "font-size:13px; font-style: italic;margin-bottom:0px"),
+                         p("please click the link below.",
+                           style = "font-size:13px; font-style: italic;margin-bottoms:0px"),
+                         p(tags$a(href = "https://outcomes.bcstats.gov.bc.ca", "www.outcomes.bcstats.gov.bc.ca"),
+                           style = "font-size:13px; font-style: italic;")
                 )
               )
             )
-          )
-        ),
+         ),
 
         tabPanel("Summary",
           width = "100%",
