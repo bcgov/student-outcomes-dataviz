@@ -49,7 +49,7 @@ shinyUI(tagList(
       titleWidth = 700
     ),
 
-    # Dashboardsidebar
+    # Dashboardsidebar ----
     dashboardSidebar(
       # Remove the sidebar toggle element
       tags$script(JS("document.getElementsByClassName('sidebar-toggle')[0].style.visibility = 'hidden';")),
@@ -105,7 +105,7 @@ shinyUI(tagList(
       br(),
       div(style = "display:inline-block;width:0%;padding-left: 15px;", uiOutput("screenshot_pdf"))
       ),
-
+    # Dashboardbody ----
     dashboardBody(id="body",
       useShinyjs(),
       tags$style(
@@ -126,8 +126,8 @@ shinyUI(tagList(
         "#image img {max-width: 100%; width: 50%; height: auto}"
       )),
       tags$head(tags$link(rel = "shortcut icon", href = "favicon.png")),
-      ### Summary Section ---------------
       tabsetPanel(id = "tabs",
+                  ## Home tab ----
         tabPanel(
           "Home",
           style = "background-color:#e9f3ff;min-height: 100vh;padding-top:40px",
@@ -167,7 +167,7 @@ shinyUI(tagList(
               )
             )
          ),
-
+        ## Summary tab ----
         tabPanel("Summary",
           width = "100%",
           fluidRow(box(
@@ -249,6 +249,7 @@ shinyUI(tagList(
             uiOutput("footer_1")
           ))
         ),
+        ## Skill development tab ----
         tabPanel("Skill Development", width = "100%", fluidRow(
           box(
             id = "sat", uiOutput("text3"),
@@ -294,7 +295,7 @@ shinyUI(tagList(
             uiOutput("footer_2")
           )
         )),
-        ### Employment Section --------------------------
+        ## Employment tab ----
         tabPanel(
           "Employment",
           fluidRow(box(
