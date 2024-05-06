@@ -526,7 +526,7 @@ shinyServer(function(input, output, session) {
         orientation = "h",
         xaxis = list(title = "", tickformat = ".0%", zeroline = FALSE, fixedrange = TRUE, range = c(0, 1.1)),
         yaxis = list(title = "", fixedrange = TRUE),
-        margin = list(l = 220, pad = 7)
+        margin = list(l = 220, r = 70, pad = 7)
       ) %>%
       add_annotations(
         xref = "x", yref = "y",
@@ -857,7 +857,7 @@ shinyServer(function(input, output, session) {
           fixedrange = TRUE, range = c(0, 1.1)
         ),
         yaxis = list(title = "", fixedrange = TRUE),
-        margin = list(l = 220, pad = 7)
+        margin = list(l = 220, r = 70, pad = 7)
       ) %>%
       add_annotations(
         xref = "x", yref = "y",
@@ -897,7 +897,7 @@ shinyServer(function(input, output, session) {
           fixedrange = TRUE, range = c(0, 1.1)
         ),
         yaxis = list(title = "", fixedrange = TRUE),
-        margin = list(l = 220, pad = 7)
+        margin = list(l = 220, r= 70, pad = 7)
       ) %>%
       add_annotations(
         xref = "x", yref = "y",
@@ -936,7 +936,7 @@ shinyServer(function(input, output, session) {
           fixedrange = TRUE, range = c(0, 1.1)
         ),
         yaxis = list(title = "", fixedrange = TRUE),
-        margin = list(l = 220, pad = 7)
+        margin = list(l = 220, r = 70, pad = 7)
       ) %>%
       add_annotations(
         xref = "x", yref = "y",
@@ -985,7 +985,7 @@ shinyServer(function(input, output, session) {
           fixedrange = TRUE, range = c(0, 1.1)
         ),
         yaxis = list(title = "", fixedrange = TRUE),
-        margin = list(l = 220, pad = 7)
+        margin = list(l = 220, r = 70, pad = 7)
       ) %>%
       add_annotations(
         xref = "x", yref = "y",
