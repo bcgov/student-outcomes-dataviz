@@ -162,7 +162,17 @@ shinyUI(tagList(
                          p("please click the link below.",
                            style = "font-size:13px; font-style: italic;margin-bottoms:0px"),
                          p(tags$a(href = "https://outcomes.bcstats.gov.bc.ca", "www.outcomes.bcstats.gov.bc.ca"),
-                           style = "font-size:13px; font-style: italic;")
+                           style = "font-size:13px; font-style: italic;"),
+                       br(),
+                       p("To download the aggregated BC Student Outcomes Data Viewer Excel file,",
+                         style = "font-size:13px; font-style: italic;margin-bottom:0px"),
+                       p("please click the link below.",
+                         style = "font-size:13px; font-style: italic;margin-bottoms:0px"),
+                       p(tags$a(href = "https://catalogue.data.gov.bc.ca/dataset/90ceae93-f796-4198-8867-bc5e599babde", 
+                                "BC Student Outcomes Program Data Viewer File - Dataset - BC Data Catalogue (gov.bc.ca)"),
+                         style = "font-size:13px; font-style: italic;")
+
+
                 )
               )
             )
