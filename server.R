@@ -32,12 +32,12 @@ gender_age_function <- function(male, female, age, satisfaction) {
           div(
             class = "malefemale",
             h1(male),
-            h1("were male")
+            h1("were men")
           ),
           div(
             class = "malefemale",
             h1(female),
-            h1("were female")
+            h1("were women")
           )
         )
       )
@@ -296,35 +296,35 @@ shinyServer(function(input, output, session) {
 
   # Gender age under summary section
   output$gender_age <- renderUI({
-    req(filtered_data()$MALE)
+    req(filtered_data()$MEN)
     req(filtered_data()$AGE)
 
-    male <- if (filtered_data()$MALE == -3) {
+    male <- if (filtered_data()$MEN == -3) {
       "Fewer than 5%"
-    } else if (filtered_data()$MALE == -4) {
+    } else if (filtered_data()$MEN == -4) {
       "More than 95%"
-    } else if (filtered_data()$MALE == -5) {
+    } else if (filtered_data()$MEN == -5) {
       "The majority"
-    } else if (filtered_data()$MALE == -99) {
+    } else if (filtered_data()$MEN == -99) {
       "Too few responses to report"
-    } else if (filtered_data()$MALE == -1) {
+    } else if (filtered_data()$MEN == -1) {
       ""
     } else {
-      paste(round2(filtered_data()$MALE * 100, 0), "%", sep = "")
+      paste(round2(filtered_data()$MEN * 100, 0), "%", sep = "")
     }
 
-    female <- if (filtered_data()$FEMALE == -3) {
+    female <- if (filtered_data()$WOMEN == -3) {
       "Fewer than 5%"
-    } else if (filtered_data()$FEMALE == -4) {
+    } else if (filtered_data()$WOMEN == -4) {
       "More than 95%"
-    } else if (filtered_data()$FEMALE == -2) {
+    } else if (filtered_data()$WOMEN == -2) {
       "The majority"
-    } else if (filtered_data()$FEMALE == -99) {
+    } else if (filtered_data()$WOMEN == -99) {
       "Too few responses to report"
-    } else if (filtered_data()$FEMALE == -1) {
+    } else if (filtered_data()$WOMEN == -1) {
       ""
     } else {
-      paste(round2(filtered_data()$FEMALE * 100, 0), "%", sep = "")
+      paste(round2(filtered_data()$WOMEN * 100, 0), "%", sep = "")
     }
 
     if (female == "") {
@@ -344,7 +344,7 @@ shinyServer(function(input, output, session) {
               div(
                 class = "malefemale",
                 h1(male),
-                h1("were male")
+                h1("were men")
               )
             )
           )
@@ -388,7 +388,7 @@ shinyServer(function(input, output, session) {
               div(
                 class = "malefemale",
                 h1(female),
-                h1("were female")
+                h1("were women")
               )
             )
           )
