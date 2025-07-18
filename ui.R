@@ -21,6 +21,7 @@ window.print();
 
 # Define UI for the application - Dashboardpage
 shinyUI(tagList(
+  tags$head(includeHTML("www/google-analytics.html")),
   dashboardPage(
     title = "BC Student Outcomes Data Viewer",
     dashboardHeader(
