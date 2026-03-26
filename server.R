@@ -229,6 +229,7 @@ shinyServer(function(input, output, session) {
   output$screenshot_pdf <- renderUI({
     capture_pdf(selector="#body", filename = paste0("BC SO Data Viewer - ", input$tabs),
                 icon("download"), "Save as PDF",
+                id = "screenshot_btn",
                 style = "color: #000;
                  display: inline-block;
                  background-color:#fff;
@@ -1026,6 +1027,8 @@ shinyServer(function(input, output, session) {
     filename = "Notes for the Student Outcomes Data Viewer.pdf",
     content = function(file) {
       file.copy("www/Notes for the Student Outcomes Data Viewer.pdf", file)
+      # Notify client to send GA event for download
+      session$sendCustomMessage("trackDownload", list(filename = "Notes for the Student Outcomes Data Viewer.pdf"))
     }
   )
 
